@@ -1,0 +1,12 @@
+*.aux
+*.bbl
+*.bcf
+*.log
+*.out
+*.pdf
+*.xml
+*.blg
+*.gz
+.directory
+.dropbox
+*.kate-swp

@@ -1,0 +1,148 @@
+\documentclass[a4paper,10pt]{article}
+%\documentclass[a4paper,10pt]{scrartcl}
+
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{siunitx}
+\usepackage{subcaption}
+\usepackage{tikz}
+\usepackage{booktabs}
+\usepackage{datetime}
+\usepackage{parskip}
+
+\usepackage[
+  backend=biber,
+  style=alphabetic,
+  citestyle=authoryear
+]{biblatex}
+ 
+\addbibresource{../../library/snow.bib} %Imports 
+\addbibresource{../../library/scidb.bib} %Imports 
+
+\input{../../latex/preamble.tex}
+\input{../../latex/acronyms.tex}
+
+\title{PhD dissertation pre-proposal}
+\author{Niklas Griessbaum}
+\date{2018-05-19}
+
+
+\begin{document}
+\maketitle
+
+
+
+\section{Motivation}
+
+Environmental informatics is the application of information science to environmental sciences.
+%As such it involve activities of research programing (programing with the goal of obtaining insight from data \cite{PhilipJiaGuo2012}),
+%but also addresses the information infrastructure in which an environmental scientists works in.
+As such, it addresses the information infrastructure that environmental scientists leverage
+to obtain knowledge form environmental data.
+
+The appearance of cloud computing, characterized by scalability on one side, 
+and by abstraction and stereotyping of interactions through APIs on the other side, 
+provides for opportunities in environmental informatics. 
+At the same time it opens up questions of what the workflow
+of an environmental scientists should look like to fully exploit these opportunities.
+
+%My thesis is that certain infrastructure is needed to allowenvironment scientists to fully exploit the opportunities of the cloud-era.
+
+%My thesis is that the flow from data source to knowledge is inherently heterogeneous and modular in the environmental sciences. By understanding these flows and their bottlenecks, infrastructure can be developed that unblock the bottlenecks
+
+%Environmental scientists work in an inherently nonmonolitic/modular environment.
+
+%My thesis is that there exist bottlenecks in the heterogeneous flow from data source to knowledge in the environment sciences, and that these bottlenecks can be unblocked through infrastructures that is leveraging cloud computing.
+
+My thesis is that the inherent heterogeneity of the flow from data to knowledge
+in the environmental sciences exhibits bottlenecks that can be unblocked through infrastructures that is leveraging cloud computing.
+%ETL
+
+I want to address the following bottlenecks in my dissertation:
+
+\begin{enumerate}
+ \item Data interoperability: 
+       Data interoperability can be established if knowledge and trust about the data is available. Traditionally, trust and knowledge is manually provided by the scientist. In order to allow for seamless/automatized interoperability, mechanism for providing machine-actionable provenance and citations are needed.
+ \item Data access: 
+       Traditional data access is file-centric; a paradigm that forces users to move data prior to extracting knowledge. Since network bandwidth is the limiting factor on performance in the cloud era, infrastructure that allows knowledge extraction at the place of storage is needed.
+ \item Data variety: 
+       Integration of data from different sources is tedious since formats, and schemas as well as resolution and localization types (points, raster, polygons, point clouds) vary. Infrastructure and standards that help associate spatial and temporal coincidence is needed to facilitate integration of data variety.
+% \item Efficiency:
+%       The nature of geospatial analysis requires computationally expensive transcendental computations.
+%       Substitution of trig-functions with index operations
+\end{enumerate} 
+
+%These bottlenecks 
+
+\newpage
+
+
+\section{Work Plan}
+
+\subsection{Data Citation}
+
+Machine actionable data citations are one approach to improve the ability for seamless data interoperability. The challenge hereby is evolving data and complex structure of databases. I want to address this by elaborating on the following questions in a data citation review:
+
+\begin{itemize}
+ \item What is a data citation. In particular, what is the difference between abstract citations and the intellectual artefact. To what degree do citations have to be opaque versus semantic? Are citations a mere collapsed view on provenance?
+ \item How is data supposed to be cited. What information is necessary and how are they supposed to be presented?
+ \item What information needs to be available and what rules need to be established to automatically generate generate machine-actionable data citations?
+ \item What is the current status of machine actionable data citation? 
+ \item How do the approaches on data citations employed by e.g. schema.org, Datalite EasyID, RDA, DataCite, or DataOne equal and differ?
+\end{itemize}
+
+With the development of \textit{bibdap}\footnote{Former name: OCCUR}, I want to demonstrate how a data provision service can be augmented with the capability to automatically generate and resolve machine actionable data citations. The development of \textit{bibdap} is supported by the ESIP federation as an 2018 ESIP lab project. The concept of \textit{bibdap} has also been presented at the 2017 Bren PhD Symposium.
+  
+
+% Buneman et alt:   
+% Databases have to be cited appropriately 
+% Challange is evovling data and complex structure
+% Automatically generation needed
+  
+% Rauber / Asmi:
+% 12 levels R1 through R12
+
+\subsection{Data access}
+
+Traditionally, data access in environmental sciences is file-centric. This entails three separate issues:
+
+\begin{itemize}
+ \item Data movement.
+       Since file-scentric data provision service are not intended to provide analysis capabilities, all data that is to be analysed has to be moved to an analysis system prior to analysis.
+ \item Transfer overhead. 
+       Since a pure file-centric system does not allow subsetting below file level, scientists have to move unneeded data (e.g. irrelevant bands or out-of-scope areas).
+ \item Data integration.
+       Since data granule definitions are heterogeneous amongst data providers, platforms and sensors, the integration of different data sources is a tedious effort for the environmental scientist. 
+ \item Use of high level products.
+\end{itemize}
+
+These issues are addressed by efforts such as the google earth engine or the SpatioTemporal Adaptive Resolution Encoding. 
+
+Building on top of STARE, I want to explore the capabilities of STARE enabled SciDB and complement the development with following components:
+
+\begin{itemize}
+ \item Define schemas to integrate data of various sensors.
+ \item STARE-ScidDB loading mechanism for various sensors.
+ \item Height dimensions into STARE.
+ \item Defining chunking sizes for data of unknown sparsness.
+ \item *Soft joins (e.g. join data stored at lvl 8 with data stored at lvl 4).
+ \item *HDF-view on STARE-SciDB
+ \item Indexing of pixels: Exploring and characterizing of tessellation vs same-size indexing. Exploration of the storage and compute overhead for tessellated pixels.
+ \item Implementing STARE enabled SciDB in a queue manager driven HPC environment.
+ \item Comparison of STARE enabled SciDB to EarthEngine and OGC DGGS.
+ \item Creation of a library providing proxy objects to STARE enabled SciDB datasets for high level programming languages (python and R) similar to STARS'\footnote{\url{https://github.com/r-spatial/stars}} or openEO's anticipated ability to work with data that is remotely held in a cloud storage. The goal hereby is provide the user with declarative rather than procedural ways of interacting with the data. 
+\end{itemize}
+
+\paragraph{Opportunities}
+Moving away from file-centric approaches releases the scientists of the task
+of data integration. Therefore more raw products can feasibly be used by 
+scientists. This has the advantage that e.g. less aggregated data have to be used,
+hand-made calibrations can be developed, new products can be easier introduced and
+that projections will not be of any issue anymore
+
+\section{Research interests}
+
+\section{Reading List}
+
+
+\end{document}
