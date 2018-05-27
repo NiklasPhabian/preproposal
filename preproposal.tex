@@ -1,26 +1,10 @@
 \documentclass[a4paper,10pt]{article}
-%\documentclass[a4paper,10pt]{scrartcl}
-
-\usepackage[utf8]{inputenc}
-\usepackage{graphicx}
-\usepackage{siunitx}
-\usepackage{subcaption}
-\usepackage{tikz}
-\usepackage{booktabs}
-\usepackage{datetime}
-\usepackage{parskip}
-
-\usepackage[
-  backend=biber,
-  style=alphabetic,
-  citestyle=authoryear
-]{biblatex}
- 
-\addbibresource{../../library/snow.bib} %Imports 
-\addbibresource{../../library/scidb.bib} %Imports 
 
 \input{../../latex/preamble.tex}
 \input{../../latex/acronyms.tex}
+
+\addbibresource{../../library/snow.bib} %Imports 
+\addbibresource{../../library/scidb.bib} %Imports 
 
 \title{PhD dissertation pre-proposal}
 \author{Niklas Griessbaum}
@@ -29,120 +13,174 @@
 
 \begin{document}
 \maketitle
-
+%\printglossaries
 
 
 \section{Motivation}
 
 Environmental informatics is the application of information science to environmental sciences.
-%As such it involve activities of research programing (programing with the goal of obtaining insight from data \cite{PhilipJiaGuo2012}),
-%but also addresses the information infrastructure in which an environmental scientists works in.
 As such, it addresses the information infrastructure that environmental scientists leverage
 to obtain knowledge form environmental data.
 
 The appearance of cloud computing, characterized by scalability on one side, 
-and by abstraction and stereotyping of interactions through APIs on the other side, 
+and by abstraction and stereotyping of interactions through \glspl{API} on the other side, 
 provides for opportunities in environmental informatics. 
-At the same time it opens up questions of what the workflow
-of an environmental scientists should look like to fully exploit these opportunities.
-
-%My thesis is that certain infrastructure is needed to allowenvironment scientists to fully exploit the opportunities of the cloud-era.
-
-%My thesis is that the flow from data source to knowledge is inherently heterogeneous and modular in the environmental sciences. By understanding these flows and their bottlenecks, infrastructure can be developed that unblock the bottlenecks
-
-%Environmental scientists work in an inherently nonmonolitic/modular environment.
-
-%My thesis is that there exist bottlenecks in the heterogeneous flow from data source to knowledge in the environment sciences, and that these bottlenecks can be unblocked through infrastructures that is leveraging cloud computing.
+At the same time, it opens up questions of what the workflow
+of environmental scientists should look like to fully exploit these opportunities.
 
 My thesis is that the inherent heterogeneity of the flow from data to knowledge
-in the environmental sciences exhibits bottlenecks that can be unblocked through infrastructures that is leveraging cloud computing.
-%ETL
+in the environmental sciences causes bottlenecks that can be unblocked through 
+infrastructures that are leveraging cloud computing.
 
-I want to address the following bottlenecks in my dissertation:
+In my dissertation, I want to address the dusk of file centric-data access.
 
+Files package (i.e. chunk or aggregate) data into logical units and provide an intelligible identity to their content: Their filename.
+In a file-centric data access scheme, users extract, transform, and load 
+files prior to extracting knowledge.
+
+Traditional file-centric data access thus results in three distinct bottlenecks:
 \begin{enumerate}
- \item Data interoperability: 
-       Data interoperability can be established if knowledge and trust about the data is available. Traditionally, trust and knowledge is manually provided by the scientist. In order to allow for seamless/automatized interoperability, mechanism for providing machine-actionable provenance and citations are needed.
- \item Data access: 
-       Traditional data access is file-centric; a paradigm that forces users to move data prior to extracting knowledge. Since network bandwidth is the limiting factor on performance in the cloud era, infrastructure that allows knowledge extraction at the place of storage is needed.
- \item Data variety: 
-       Integration of data from different sources is tedious since formats, and schemas as well as resolution and localization types (points, raster, polygons, point clouds) vary. Infrastructure and standards that help associate spatial and temporal coincidence is needed to facilitate integration of data variety.
-% \item Efficiency:
-%       The nature of geospatial analysis requires computationally expensive transcendental computations.
-%       Substitution of trig-functions with index operations
-\end{enumerate} 
+ \item Files have to be moved prior to knowledge extraction.
+ \item The pre-defined package size of files results in a transfer overhead.
+ \item Alignment of heterogeneous data has to be handled manually.
+\end{enumerate}
 
-%These bottlenecks 
+Files are moved (really: copied) before analysis for two reasons: 
+1: The origin of the data (i.e. the repositories) does not offer any, or not sufficient capabilities to execute calculations on the data. Data, therefore,
+has to be moved to the point of computation. 
+2: The analysis requires the use of data from various sources. Data, therefore, is moved to integrate different datasets. \\
+Data movement is undesired since it results in unstructured duplication of data.
+The more distressing reason though is that compute (DRAM) bandwidths are exceeding effective network bandwidths by an order of magnitude. The trends of the last 20 years hereby exhibit increasing disparity.
+
+
+The pre-defined package size of files will in a lot of cases not equal the area of
+interest for the analysis. A file might for example package every band of a
+sensor while only one band is of interest for the analysis. As long as files are the smallest subset unit for extraction, a transfer \textbf{overhead} will arise if  
+the area of interest does not fully cover the pre-defined package size of the file.
+
+Data have to be \textbf{aligned} manually when no common method to address tempo-spatial coincidence exists throughout the datasets used in an analysis. This is typically 
+the case when data from different sources are integrated. Alignment is then manually achieved through projection, aggregation, and gridding of all datasets into a shared schema.
+
+Through the use of common indexes, the alignment of heterogeneous data can be simplified.
+Further, technologies like \gls{OPeNDAP} reduce the data transfer overhead by allowing
+sub-setting of files prior to transfer.\footnote{The combination of both of these approaches is a subject of the proposal ``SpatioTemporal Adaptive-Resolution Encoding to Unify Diverse Earth Science Data for Integrative Analysis'' submitted to ``Advancing Collaborative Connection for Earth System Science'' (NNH17ZDA001N-ACCESS).}
+However, the very necessity to move data prior to knowledge extraction remains intact
+as long as computations are not executed at the place of storage.
 
 \newpage
 
-
 \section{Work Plan}
+On the path to a work-flow in which knowledge can be extracted from data without the necessity of prior data movement, following requirements have to be fulfilled:
+
+\paragraph{Co-location of data:}
+Data has to be moved before analysis to integrate data from different sources. 
+To avoid this data movement, all required data have to be readily co-located at the place of computation. In practical terms, this means storage of data in databases
+rather than in files.
+
+\paragraph{Alignment of data:}
+The integration of heterogeneous data requires data to be aligned prior to analysis. I.e. a common concept to address spatiotemporal coincidence needs to be established throughout all the data.
+
+\paragraph{Provision of data identity:}
+By abandoning files as the package of data, a natural identity of data is lost. Identity, however, is needed to refer to, and reason about data.
+
 
 \subsection{Data Citation}
+The addressable identity of data is lost as soon as files as an intelligible package of data are abandoned.
+Data identity, however, is needed to refer to and reference data, and moreover to provide provenance. Provenance, in turn, allows the capability to reproduce work,
+which ensures trust in the data. 
+Trust finally is required for researchers to build on top of each other's work.
 
-Machine actionable data citations are one approach to improve the ability for seamless data interoperability. The challenge hereby is evolving data and complex structure of databases. I want to address this by elaborating on the following questions in a data citation review:
+Data citations can provide identity to data outside of file-centric environments. They can serve as an interface of trust in a heterogeneous system. 
+
+%In order to create seamless workflows, data citations have to be machine actionable, both in terms of creation and in terms of resolving.
+
+Data citation differ from citations of printed material 
+in that the cited content (i.e. the data) may evolve over time and in that meta-information such as authorship or the provenance may vary within a continuous dataset. Further, since infinite ways to subset data are possible, data citations cannot be statically generated. They have to be machine-actionable, both in terms of dynamic creation (as a function of time and subsetting parameters) and in terms of resolving citations back to the cited material.
+
+I want to address the challenges of data citations by elaborating on the following questions in a data citation review:
 
 \begin{itemize}
- \item What is a data citation. In particular, what is the difference between abstract citations and the intellectual artefact. To what degree do citations have to be opaque versus semantic? Are citations a mere collapsed view on provenance?
- \item How is data supposed to be cited. What information is necessary and how are they supposed to be presented?
- \item What information needs to be available and what rules need to be established to automatically generate generate machine-actionable data citations?
- \item What is the current status of machine actionable data citation? 
- \item How do the approaches on data citations employed by e.g. schema.org, Datalite EasyID, RDA, DataCite, or DataOne equal and differ?
+    \item   How is data cited as of today? 
+    \item   What is the status of machine-actionable data citation? 
+    \item   How are data citations resolved?
+    \item   What are the efforts of data citation standardization? 
+    \item   What information needs to be available to create a data citation?
+    \item   What information does a data citation need to contain?
+    \item   What rules are needed to create data citations?    
+    \item   How do the approaches on data citations employed by e.g. schema.org, Datalite,  EasyID, RDA, DataCite, or DataOne equal and differ?    
+    \item   What is the distinguishing difference between a data citation and a \gls{DOI}.
 \end{itemize}
 
-With the development of \textit{bibdap}\footnote{Former name: OCCUR}, I want to demonstrate how a data provision service can be augmented with the capability to automatically generate and resolve machine actionable data citations. The development of \textit{bibdap} is supported by the ESIP federation as an 2018 ESIP lab project. The concept of \textit{bibdap} has also been presented at the 2017 Bren PhD Symposium.
+On the practical side, I am addressing data citation through
+the implementation of the OPeNDAP extension \textit{bibdap}\footnote{Former name: OCCUR}.
+With the development of \textit{bibdap}, I want to demonstrate how a data provision service can be augmented with the capability to automatically generate and resolve machine actionable data citations subject to the \gls{DAS} (static metadata), subsetting parameters and the time of creation. The development of \textit{bibdap} is supported by the ESIP federation as a 2018 \gls{ESIP} lab project. The concept of \textit{bibdap} has been presented at the 2017 Bren PhD Symposium.
   
+\newpage
 
-% Buneman et alt:   
-% Databases have to be cited appropriately 
-% Challange is evovling data and complex structure
-% Automatically generation needed
-  
-% Rauber / Asmi:
-% 12 levels R1 through R12
+\subsection{Data co-location and co-alignment}
+In order to relax the necessity to move data prior to knowledge generation, 
+all datasets required for analysis have to be readily stored at the place of computation.
+The co-located datasets further need to be co-aligned
+to allow efficient interoperability. 
+Co-alignment means that spatiotemporal coincidence can be addressed
+in the same way for all datasets. Co-alignment can be achieved through a shared
+indexing schema. 
+In the most simple form, this could be a regular grid. 
+A side-effect of co-alignment is that it can be exploited to improve physically data placement: If spatiotemporally coincidental data is stored in physical proximity, 
+it can be processed (embarrassingly) parallel in a shared-nothing architecture.
 
-\subsection{Data access}
+Building on top of the existing technologies of SciDB and the \gls{STARE}\footnote{STARE is a global indexing schema that is built upon \gls{HTM}.}, 
+I started to develop a system that co-locates and co-aligns data at the place of computation. I have presented the findings of an early stage of a system that indexes and stores MODIS-swath data in a SciDB cluster during an oral presentation at the AGU Fall meeting 2017.
 
-Traditionally, data access in environmental sciences is file-centric. This entails three separate issues:
-
+I want to continue the development of this system to address the following questions.
 \begin{itemize}
- \item Data movement.
-       Since file-scentric data provision service are not intended to provide analysis capabilities, all data that is to be analysed has to be moved to an analysis system prior to analysis.
- \item Transfer overhead. 
-       Since a pure file-centric system does not allow subsetting below file level, scientists have to move unneeded data (e.g. irrelevant bands or out-of-scope areas).
- \item Data integration.
-       Since data granule definitions are heterogeneous amongst data providers, platforms and sensors, the integration of different data sources is a tedious effort for the environmental scientist. 
- \item Use of high level products.
+ \item How does a system that leverages STARE within SciDB compare to google earth engine and the SpatioTemporal Adaptive Resolution Encoding?
+ \item How should SciDB schemas be designed to store STARE-indexed data for various sensors (e.g. MODIS, VIRRS, Landsat, point measurements, ASO)?
+ \item How can data from a variety of sensors be efficiently STARE-indexed and loaded into SciDB?
+ \item How can SciDB chunking sizes be optimized for data of unknown sparseness?
+ \item What are the relevant criteria to decide on the indexing method for (swath) pixels? (Pixels can e.g. be indexed through tessellation or through indexing of the centroids).
+ \begin{itemize}    
+    \item How can we quantify the loss of accuracy for the different methods?
+    \item How can the storage and compute overhead for pixels indexed through tessellation be quantified?
+ \end{itemize} 
+ \item How can (STARE-)SciDB be operated in a queue manager driven \gls{HPC} environment.
+ \item How can a file-view (e.g. \gls{HDF}) onto data stored in SciDB be realized for purposes of legacy compatibility.
+ \item How can the interactions with STARE-indexed data stored in SciDB be abstracted from high level programming languages. \footnote{Reference to the 
+ anticipated capabilities of STARS\footnote{\url{https://github.com/r-spatial/stars}} and openEO}
 \end{itemize}
 
-These issues are addressed by efforts such as the google earth engine or the SpatioTemporal Adaptive Resolution Encoding. 
+\subsection{Use case}
+A compute system that co-locates and co-aligns datasets has its greatest utility for
+analysis of large amounts of heterogeneous data; i.e. if data of various shapes are to be integrated. An interesting and apt example is the calculation and comparison of sub-pixel snow cover and snow temperature from various observations.
+Subpixel snow cover can be calculated from satellites that measure in two or more thermal bands. These include MODIS, VIIRS, Landsat, GOES.
+At the same time. a variety of other sources of information on snow cover exist, such as snow-tracks, snow-pillows or the \gls{ASO}.
+Each one of these data has widely different spatial and temporal resolutions.
 
-Building on top of STARE, I want to explore the capabilities of STARE enabled SciDB and complement the development with following components:
+The research question that I therefore want to answer in this context is:
+Can the effort to extract knowledge from these heterogeneous data sources be reduced
+if data is co-located in a SciDB cluster and co-aligned through STARE prior to analysis.
 
-\begin{itemize}
- \item Define schemas to integrate data of various sensors.
- \item STARE-ScidDB loading mechanism for various sensors.
- \item Height dimensions into STARE.
- \item Defining chunking sizes for data of unknown sparsness.
- \item *Soft joins (e.g. join data stored at lvl 8 with data stored at lvl 4).
- \item *HDF-view on STARE-SciDB
- \item Indexing of pixels: Exploring and characterizing of tessellation vs same-size indexing. Exploration of the storage and compute overhead for tessellated pixels.
- \item Implementing STARE enabled SciDB in a queue manager driven HPC environment.
- \item Comparison of STARE enabled SciDB to EarthEngine and OGC DGGS.
- \item Creation of a library providing proxy objects to STARE enabled SciDB datasets for high level programming languages (python and R) similar to STARS'\footnote{\url{https://github.com/r-spatial/stars}} or openEO's anticipated ability to work with data that is remotely held in a cloud storage. The goal hereby is provide the user with declarative rather than procedural ways of interacting with the data. 
-\end{itemize}
 
-\paragraph{Opportunities}
-Moving away from file-centric approaches releases the scientists of the task
-of data integration. Therefore more raw products can feasibly be used by 
-scientists. This has the advantage that e.g. less aggregated data have to be used,
-hand-made calibrations can be developed, new products can be easier introduced and
-that projections will not be of any issue anymore
 
-\section{Research interests}
 
-\section{Reading List}
+%\section{Literature review}:
+%
+%\cite{Dozier1981} presents a method to measure surface radiant temperatures at sub-pixel
+%resolution. It exemplifies a method for TIROS-N satellites.
+%The fundamental principle is that a sub-pixel area with higher temperature will contribute
+%proportinally more to the signal in the shorter wavelengths.
+%The method assumes that only two temperature fields exist within the pixel.
+%
+%\Cite{Painter2009} present a method to obtain the fraction of each MODIS pixel that is covered by snow. Simultaneously, grain size of the fractional snow cover is estimated. Combined with an estimation for snow impurities, the albedo of the snow can be retrieved.
+%The underlying method is spectral unmixing. Spectral unmixing assumes that the radiance received at the sensor is a linear combination of reflected radiances from the different surfaces (endmembers). In order to solve for the fractional surface types, the error of linear combination is minimized through a least-square fit.
+%Endmembers of pure surface covers for varying grain sizes and zenith angles are pre-calculated. Additionally, endmembers for rock, soil, vegetation, and ice are calculated.
+%
+%\cite{Lundquist2018} presents a method to separate snow from forest temperatures and to determine fractional snow cover from MODIS data.
+%A night time approach and a day time approach is provided.
+%%MOD09GA: visible for forest cover (sinosoidal) *MODIS 1B for infrared (swath)
 
+
+%\section{Reading List}
+\printbibliography 
 
 \end{document}

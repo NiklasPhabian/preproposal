@@ -7,6 +7,13 @@
 *.xml
 *.blg
 *.gz
+*.acn
+*.alg
+*.glg
+*.glo
+*.ist
+*.acr
+*.gls
 .directory
 .dropbox
 *.kate-swp
