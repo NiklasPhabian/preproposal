@@ -3,27 +3,47 @@
 \input{../../latex/preamble.tex}
 \input{../../latex/acronyms.tex}
 
-\addbibresource{../../library/snow.bib} %Imports 
-\addbibresource{../../library/scidb.bib} %Imports 
+
+\usepackage[
+  backend=biber,
+  style=reading,
+  citestyle=authoryear,
+  abstract=false,
+  file=false,
+  entryhead=true,
+  entrykey=true,
+  annotation=true,
+  library=true,
+  loadfiles=true,
+  natbib=true
+]{biblatex}
+
+
+\addbibresource{../../library/snow.bib} 
+\addbibresource{../../library/phd.bib} 
+\addbibresource{../../library/scidb.bib} 
+\addbibresource{../../library/citation_paper.bib} 
+\addbibresource{../../library/CS274.bib} 
 
 \title{PhD dissertation pre-proposal}
 \author{Niklas Griessbaum}
-\date{2018-05-19}
+\date{\today}
 
 
 \begin{document}
 \maketitle
-%\printglossaries
+\printglossaries
 
+\newpage
 
 \section{Motivation}
 
-Environmental informatics is the application of information science to environmental sciences.
+Environmental informatics is the application of information science to environmental sciences \citep{Frew2012}.
 As such, it addresses the information infrastructure that environmental scientists leverage
 to obtain knowledge form environmental data.
 
 The appearance of cloud computing, characterized by scalability on one side, 
-and by abstraction and stereotyping of interactions through \glspl{API} on the other side, 
+and by abstraction and stereotyping of interactions through services and \glspl{API} on the other side \citep{Foster2017}, 
 provides for opportunities in environmental informatics. 
 At the same time, it opens up questions of what the workflow
 of environmental scientists should look like to fully exploit these opportunities.
@@ -32,40 +52,34 @@ My thesis is that the inherent heterogeneity of the flow from data to knowledge
 in the environmental sciences causes bottlenecks that can be unblocked through 
 infrastructures that are leveraging cloud computing.
 
-In my dissertation, I want to address the dusk of file centric-data access.
+In my dissertation, I want to address the twilight of file centric-data access\footnote{Dateinedämmerung}.
 
-Files package (i.e. chunk or aggregate) data into logical units and provide an intelligible identity to their content: Their filename.
-In a file-centric data access scheme, users extract, transform, and load 
-files prior to extracting knowledge.
+Files package (i.e. chunk or aggregate) data into logical units and provide an intelligible identity to their content: Their filename\footnote{Using the conventions of MODIS  filename as data identity was e.g. exploited by MODster \citep{Frew2005, Frew2002} to managed distributed data}.
+In a file-centric data access scheme, users \gls{ETL} data from files prior to extracting knowledge \citep{Rilee2016}.
+%In a file-centric data access scheme, users extract (files from repositories), transform (the data stored in the files into a desired shape), and load the data into a system where they can interact with
 
-Traditional file-centric data access thus results in three distinct bottlenecks:
+Traditional file-centric data access struggles with three distinct issues:
 \begin{enumerate}
- \item Files have to be moved prior to knowledge extraction.
+ \item Data has to be moved prior to knowledge extraction.
  \item The pre-defined package size of files results in a transfer overhead.
- \item Alignment of heterogeneous data has to be handled manually.
+ \item Alignment and integration of heterogeneous data has to be handled manually.
 \end{enumerate}
 
-Files are moved (really: copied) before analysis for two reasons: 
-1: The origin of the data (i.e. the repositories) does not offer any, or not sufficient capabilities to execute calculations on the data. Data, therefore,
-has to be moved to the point of computation. 
-2: The analysis requires the use of data from various sources. Data, therefore, is moved to integrate different datasets. \\
-Data movement is undesired since it results in unstructured duplication of data.
-The more distressing reason though is that compute (DRAM) bandwidths are exceeding effective network bandwidths by an order of magnitude. The trends of the last 20 years hereby exhibit increasing disparity.
+Data is moved (really: copied) before analysis for two reasons: 
+1: The repository holding the data does not offer any, or not sufficient capabilities to execute calculations on the data. Data, therefore, has to be moved to a point of computation. 
+2: The analysis is based on data stored in two or more different locations. Data, therefore, is moved to integrate different datasets. 
 
+Data movement is firstly undesired since it results in uncoordinated and unstructured duplication of data and therefore in a waste of storage.
+A more concerning reason though is the increasing disparity between network speeds and compute power: User bandwidth speeds have been following Nielsen's Law \citep{Nielsen1998} and grew annually by \SI{50}{\percent} over the last 36 years while compute power has been following Moore's law \citep{Moore1975} and grew annually by \SI{60}{\percent}) for the last 40 years\footnote{\url{https://ourworldindata.org/grapher/transistors-per-microprocessor}}, which makes it increasingly attractive to move computations to the data rather than the data to the place of computation.
 
-The pre-defined package size of files will in a lot of cases not equal the area of
-interest for the analysis. A file might for example package every band of a
-sensor while only one band is of interest for the analysis. As long as files are the smallest subset unit for extraction, a transfer \textbf{overhead} will arise if  
-the area of interest does not fully cover the pre-defined package size of the file.
+The pre-defined package size of files will in a lot of cases not equal the area of interest for the analysis. A file might for example contain data on bands, areas, or time periods not needed for the analysis. Consequently, as long as files are the smallest subset unit for extraction, a transfer overhead will arise if the area of interest does not fully cover the pre-defined package size of the file.
 
-Data have to be \textbf{aligned} manually when no common method to address tempo-spatial coincidence exists throughout the datasets used in an analysis. This is typically 
-the case when data from different sources are integrated. Alignment is then manually achieved through projection, aggregation, and gridding of all datasets into a shared schema.
+Data have to be aligned manually when no common method to address tempo-spatial coincidence exists throughout the datasets used in an analysis. This is typically the case when data from different sources are integrated. Alignment is then manually achieved through (re-)projection, and aggregation and gridding of all used datasets into a shared schema.
 
-Through the use of common indexes, the alignment of heterogeneous data can be simplified.
+Through the use of common indexes, the alignment of heterogeneous data could be simplified. 
 Further, technologies like \gls{OPeNDAP} reduce the data transfer overhead by allowing
-sub-setting of files prior to transfer.\footnote{The combination of both of these approaches is a subject of the proposal ``SpatioTemporal Adaptive-Resolution Encoding to Unify Diverse Earth Science Data for Integrative Analysis'' submitted to ``Advancing Collaborative Connection for Earth System Science'' (NNH17ZDA001N-ACCESS).}
-However, the very necessity to move data prior to knowledge extraction remains intact
-as long as computations are not executed at the place of storage.
+sub-setting of files prior to transfer\footnote{The combination of both of these approaches is a subject of the proposal ``SpatioTemporal Adaptive-Resolution Encoding to Unify Diverse Earth Science Data for Integrative Analysis'' submitted to ``Advancing Collaborative Connection for Earth System Science'' (NNH17ZDA001N-ACCESS).}.
+However, the very necessity to move data prior to knowledge extraction remains intact as long as computations are not executed at the place of storage.
 
 \newpage
 
@@ -73,29 +87,54 @@ as long as computations are not executed at the place of storage.
 On the path to a work-flow in which knowledge can be extracted from data without the necessity of prior data movement, following requirements have to be fulfilled:
 
 \paragraph{Co-location of data:}
-Data has to be moved before analysis to integrate data from different sources. 
-To avoid this data movement, all required data have to be readily co-located at the place of computation. In practical terms, this means storage of data in databases
-rather than in files.
+%Data has to be moved before analysis to integrate data from different sources. 
+To avoid data movement, all required data have to be readily co-located at the place of computation. 
 
 \paragraph{Alignment of data:}
 The integration of heterogeneous data requires data to be aligned prior to analysis. I.e. a common concept to address spatiotemporal coincidence needs to be established throughout all the data.
 
 \paragraph{Provision of data identity:}
-By abandoning files as the package of data, a natural identity of data is lost. Identity, however, is needed to refer to, and reason about data.
+By abandoning files as the package of data, a natural identity of data is lost. Identity, however, is needed to refer to, and reason about data. Regardless of previous subsetting and processing, data needs to be identifiable through citations.
 
+\subsection{Data co-location and co-alignment}
+In order to relax the necessity to move data prior to knowledge generation, all datasets required for analysis have to be readily stored at the place of computation. 
+The co-located datasets further need to be co-aligned to allow efficient interoperability \citep{Kuo2017, Rilee2016}. 
+Co-alignment means that spatiotemporal coincidence can be addressed in the same way for all datasets. 
+Co-alignment can be achieved through a common indexing schema. 
+In a simple form, this could be a regular grid . 
+A side-effect of co-alignment is that it can be exploited to improve physically data placement: If spatiotemporally coincidental data is stored in physical proximity, it can be processed (embarrassingly) parallel in a shared-nothing architecture\citep{Kuo2017}.
 
+Building on top of thes existing technologies of SciDB and the \gls{STARE}\footnote{STARE is a global indexing schema that is built upon the quadtree \gls{HTM}. A review of quadtrees in geospatial indexing is provided in section \ref{lit_index}.} \citep{Kuo2017}, 
+I started to develop a system that co-locates and co-aligns data at the place of computation. I have presented the findings of an early stage of a system that indexes and stores MODIS-swath data in a SciDB cluster during an oral presentation at the AGU Fall meeting 2017.
+
+I want to continue the development of this system to address the following questions.
+\begin{itemize}
+ \item How does a system that leverages \gls{STARE} within SciDB compare to google earth engine and the \gls{DGGS} \citep{OpenGeospatialConsortium2017}?
+ \item How should SciDB schemas be designed to store STARE-indexed data for various sensors (e.g. MODIS, VIRRS, Landsat, point measurements, ASO)?
+ \item How can data from a variety of sensors be efficiently STARE-indexed and loaded into SciDB?
+ \item How can SciDB chunking sizes be optimized for data of unknown sparseness?
+ \item What are the relevant criteria to decide on the indexing method for (swath) pixels? (Pixels can e.g. be indexed through tessellation or through indexing of the centroids).
+ \begin{itemize}    
+    \item How can we quantify the loss of accuracy for the different methods?
+    \item How can the storage and compute overhead for pixels indexed through tessellation be quantified?
+ \end{itemize} 
+ \item How can (STARE-)SciDB be operated in a queue manager driven \gls{HPC} environment.
+ \item How can a file-view (e.g. \gls{HDF}) onto data stored in SciDB be realized for purposes of legacy compatibility.
+ \item How can the interactions with STARE-indexed data stored in SciDB be abstracted from high level programming languages\footnote{Reference to the 
+ anticipated capabilities of STARS (\url{https://github.com/r-spatial/stars}) and openEO \url{http://openeo.org/}.}.
+\end{itemize}
+
+\newpage
 \subsection{Data Citation}
-The addressable identity of data is lost as soon as files as an intelligible package of data are abandoned.
-Data identity, however, is needed to refer to and reference data, and moreover to provide provenance. Provenance, in turn, allows the capability to reproduce work,
-which ensures trust in the data. 
-Trust finally is required for researchers to build on top of each other's work.
+A natural addressable identity of data is lost as soon as files as a package of data are abandoned.
+Data identity, however, is needed to refer to and reference data, and moreover to provide hooks into the data's provenance. Provenance, in turn, allows the capability to reproduce work, which ensures trust in the data. 
+%Trust finally is required for researchers to build on top of each other's work.
 
-Data citations can provide identity to data outside of file-centric environments. They can serve as an interface of trust in a heterogeneous system. 
+Data citations can provide identity to data outside of file-centric environments and serve as an interface of trust in a heterogeneous system. 
 
 %In order to create seamless workflows, data citations have to be machine actionable, both in terms of creation and in terms of resolving.
 
-Data citation differ from citations of printed material 
-in that the cited content (i.e. the data) may evolve over time and in that meta-information such as authorship or the provenance may vary within a continuous dataset. Further, since infinite ways to subset data are possible, data citations cannot be statically generated. They have to be machine-actionable, both in terms of dynamic creation (as a function of time and subsetting parameters) and in terms of resolving citations back to the cited material.
+Data citation differ from citations of printed material in that the cited content (i.e. the data) may evolve over time and in that meta-information such as authorship or the provenance may vary within a continuous dataset. Further, since infinite ways to subset data are possible, data citations cannot be statically generated. They have to be machine-actionable, both in terms of dynamic creation (as a function of time and subsetting parameters) and in terms of resolving citations back to the cited material.
 
 I want to address the challenges of data citations by elaborating on the following questions in a data citation review:
 
@@ -117,37 +156,6 @@ With the development of \textit{bibdap}, I want to demonstrate how a data provis
   
 \newpage
 
-\subsection{Data co-location and co-alignment}
-In order to relax the necessity to move data prior to knowledge generation, 
-all datasets required for analysis have to be readily stored at the place of computation.
-The co-located datasets further need to be co-aligned
-to allow efficient interoperability. 
-Co-alignment means that spatiotemporal coincidence can be addressed
-in the same way for all datasets. Co-alignment can be achieved through a shared
-indexing schema. 
-In the most simple form, this could be a regular grid. 
-A side-effect of co-alignment is that it can be exploited to improve physically data placement: If spatiotemporally coincidental data is stored in physical proximity, 
-it can be processed (embarrassingly) parallel in a shared-nothing architecture.
-
-Building on top of the existing technologies of SciDB and the \gls{STARE}\footnote{STARE is a global indexing schema that is built upon \gls{HTM}.}, 
-I started to develop a system that co-locates and co-aligns data at the place of computation. I have presented the findings of an early stage of a system that indexes and stores MODIS-swath data in a SciDB cluster during an oral presentation at the AGU Fall meeting 2017.
-
-I want to continue the development of this system to address the following questions.
-\begin{itemize}
- \item How does a system that leverages STARE within SciDB compare to google earth engine and the SpatioTemporal Adaptive Resolution Encoding?
- \item How should SciDB schemas be designed to store STARE-indexed data for various sensors (e.g. MODIS, VIRRS, Landsat, point measurements, ASO)?
- \item How can data from a variety of sensors be efficiently STARE-indexed and loaded into SciDB?
- \item How can SciDB chunking sizes be optimized for data of unknown sparseness?
- \item What are the relevant criteria to decide on the indexing method for (swath) pixels? (Pixels can e.g. be indexed through tessellation or through indexing of the centroids).
- \begin{itemize}    
-    \item How can we quantify the loss of accuracy for the different methods?
-    \item How can the storage and compute overhead for pixels indexed through tessellation be quantified?
- \end{itemize} 
- \item How can (STARE-)SciDB be operated in a queue manager driven \gls{HPC} environment.
- \item How can a file-view (e.g. \gls{HDF}) onto data stored in SciDB be realized for purposes of legacy compatibility.
- \item How can the interactions with STARE-indexed data stored in SciDB be abstracted from high level programming languages. \footnote{Reference to the 
- anticipated capabilities of STARS\footnote{\url{https://github.com/r-spatial/stars}} and openEO}
-\end{itemize}
 
 \subsection{Use case}
 A compute system that co-locates and co-aligns datasets has its greatest utility for
@@ -179,8 +187,109 @@ if data is co-located in a SciDB cluster and co-aligned through STARE prior to a
 %A night time approach and a day time approach is provided.
 %%MOD09GA: visible for forest cover (sinosoidal) *MODIS 1B for infrared (swath)
 
+\section{Literature Review}
+\subsection{Global indexing schemes}
+\label{lit_index}
+Indexing is a major issue addressed by modern databases. 
+Queries are often concerned only with a portion of the whole stored data volume.
+Appropriate indexing schemes minimize the data that has to be scanned \citep{Kunszt2000}.
 
-%\section{Reading List}
+The idea of using hierarchical data structures to represent or index geospatial data has been discussed for decades \citep{Dutton1996, Samet1988}.
+Hierarchical data structures are based on recursive decomposition of an initial planar or solid and can, for example, be implemented as quadtrees \citep{Samet1988}.
+
+The initial applications of quadtrees in the geospatial domain have mainly focused on representation of two-dimensional data in terms of visualization and image processing and were typically based on the tessellation of squares \citep{Lugo1995}.
+
+An early example of the use of quadtrees to represent the globe three-dimensionally is \citep{Dutton1984}, who proposed the establishment of a Geodesic Elevation Model in which locations of elevation measurements are encoded/indexed in a quadtree. 
+In \citep{Dutton1989}, the author suggests the use of this quadtree for general indexing of planetary data.
+The quadtree is created by recursively tessellating the facets of a regular solid, in this case, an octahedron.
+The triangle faces of the octahedron are broken down with the triacon breakdown. In a single step, the triacon triples the number of facets on each iteration and results in two alternating hierarchies. Every level though is fully contained within the level two steps above; two triacon breakdown steps therefore tessellate a triangle into nine smaller triangles. The address/index/code (``gemcode'') of each triangle is the concatenation of the facet numbers (one through nine) iterated through to arrive at the triangle. The author envisages a replacement of coordinates in geospatial data with geocodes, given that the community could agree on a common method to generate geocodes.
+
+In parallel efforts \citep{Fekete1990, Fekete1990a}, and \citep{Goodchild1992a} (and later also \cite{Lugo1995}) implemented the \gls{QTM} initially suggested by \citep{Dutton1984}. While \citep{Goodchild1992a} use an octrahedron as initial regular solid, \citep{Fekete1990, Fekete1990a} uses a icosahedron.
+The resulting structures allows to geospatially index every feature object on the planet. 
+In contrary to \citep{Dutton1984}, \citep{Fekete1990, Fekete1990a, Goodchild1992a, Lugo1995} iteratively tessellate each triangle into 4 triangles, allowing to store each tessellated triangle into a 2-bit code.
+\citep{Goodchild1992a} points out that the length of a trixel address (i.e. the index), which corresponds to the level/depth in the hierarchy simultaneously indexes the size (or spatial uncertainty) of the indexed object.
+
+\cite{Dutton1996} explored the tradeoffs of the choices of the initial solid (Tetrahedron, Ocatahedron, icosahedron) and hereby empathizes the advantages of an octahedron for practical reasons: The vertices occupy cardinal points (e.g. poles) and lie in ocean areas. Additionally, edges align with cardinal lines (equator, meridians).
+
+The idea of indexing spherical data with a quadtree was picked up again by \citep{Barret1995} and further adapted by \citep{Kunszt2000, Kunszt2001, Szalay2005}, who developed an indexing schema for the \gls{SDSS}, which would later on be implemented into the SkyServer\footnote{The SkyServer was built by Tom Barclay, Dr. Jim Gray and Dr. Alex Szaley from the TerraServer \citep{Barclay1998, Slutz1999} source code. The latter was a project to demonstrate the real-world scalability of MS SQL Server and Windows NT Server} \citep{Szalay2002, Thakar2003}.
+The authors coined the term \gls{HTM}.
+All nodes of the HTM quad-tree are spherical triangles. The quad-tree is created by recursively dividing triangles into 4 new triangles by using the parent-triangles corners and the midpoints of the triangle sides as corners for the new triangles.
+The name of a new node (triangle) is the concatenation of the name of the parent triangle and an index 1 through 4. Thus, node names increase in length by two bits for every level. The authors distinguish between HTM names and the HTM IDs, which is the 64 bit-encoded integer of the HTM name. 
+\citep{Kondor2014} use and extend the HTM implementation to tessellate complex regions on the earth's surface.
+
+\citep{Planthaber2012, Planthaber2012b, Krcal2015, Hausen2016, Doan2016} experiment with storing earth-observing satellite data in the array database SciDB. In their attempts, the data is indexed through integerized latitude-longitudes. \citep{Doan2016} emphasizes the importance of indexes on the database performance as they govern data placement alignment and suggests \gls{HTM} as a promising approach.
+
+\citep{Rilee2016} advance the HTM implementation from right-justified mapping to left-justified mapping:
+In a right justified mapping, trixels that are in proximity but at different levels are mapped to separate locations on the number line\footnote{trixel \textbf{S0123} has binary HTM code 1000011011 and thus HTM id 539, while trixel S01230 has the binary HTM code of 100001101100 and thus HTM id 2156. The ids are far from each other while the both trixels share the same first 4 digits in their name prefix (and thus are contained in each other)}.
+Left justified mapping respects geometric containment by right-padding HTM binary codes with zeros.
+The level (which in right-justified mapping is implicitly given) is specified by the last 5 bits of the 64 bit integer.
+In \citep{Kuo2017}, the authors extend their implementation with a temporal component and name the resulting universal geoscience data representation \gls{STARE}.
+\citep{Rilee2018} proposes the integration of \gls{STARE} with \gls{OPeNDAP} and to implement cloud-based science use-cases with STARE-enabled data access.
+
+\newpage
+\section{Reading List}
+
+\subsection{Environment Informatics}
+\cite{Frew2012} \\
+\cite{Foster2017} \\
+\cite{Frew2004} \\
+\cite{Hey2009} \\
+
+
+\subsection{Remote Sensing}
+
+\subsection{Data Citation}
+\cite{Silvello2017}
+
+\subsection{Global Indexing}
+\cite{Dutton1984} \\
+\cite{Samet1988} \\ 
+\cite{Dutton1989} \\
+\cite{Samet1990} \\
+\cite{Fekete1990a, Fekete1990} \\
+\cite{Samet1990} \\
+\cite{Goodchild1992a} \\
+\cite{Barret1995} \\
+\cite{Lugo1995} \\
+\cite{Dutton1996} \\
+\cite{Kunszt2000} \\
+\cite{Kunszt2001} \\
+\cite{Goodchild2002} \\
+\cite{Szalay2002} \\
+\cite{Thakar2003} \\
+\cite{Szalay2005} \\
+\cite{Planthaber2012, Planthaber2012b}
+\cite{Kondor2014} \\
+\cite{Krcal2015} \\
+\cite{Hausen2016} \\
+\cite{Doan2016} \\
+\cite{Rilee2016} \\
+\cite{Kuo2017} \\
+\cite{OpenGeospatialConsortium2017} \\
+
+\subsection{Databases and Operating Systems}
+\cite{Adya2000} \\
+\cite{Gray2006} \\
+\cite{Elhardt1984} \\
+\cite{Agrawal1993} \\
+\cite{Kung} \\
+\cite{DivyakantAgrawal} \\
+\cite{Das2013} \\
+\cite{Weikum} \\
+\cite{Larson2012a} \\
+\cite{Berenson1995} \\
+\cite{Silberschatz2005} \\
+\cite{Hellerstein2007} \\
+\cite{Das} \\
+\cite{Elmore} \\
+\cite{Dasa} \\
+\cite{Baker} \\
+\cite{Chang} \\
+\cite{Cooper} \\
+\cite{Decandia} \\
+\cite{Bernstein1987} \\
+
+\newpage
 \printbibliography 
 
 \end{document}
