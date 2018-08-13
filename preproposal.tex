@@ -52,10 +52,10 @@ My thesis is that the inherent heterogeneity of the flow from data to knowledge
 in the environmental sciences causes bottlenecks that can be unblocked through 
 infrastructures that are leveraging cloud computing.
 
-In my dissertation, I want to address the twilight of file centric-data access\footnote{Dateinedämmerung}.
+In my dissertation, I want to address the twilight of file-centric data access\footnote{Dateinedämmerung}, and provide solutions required for database-centric computing.
 
 Files package (i.e. chunk or aggregate) data into logical units and provide an intelligible identity to their content: Their filename\footnote{Using the conventions of MODIS  filename as data identity was e.g. exploited by MODster \citep{Frew2005, Frew2002} to managed distributed data}.
-In a file-centric data access scheme, users \gls{ETL} data from files prior to extracting knowledge \citep{Rilee2016}.
+In a file-centric data access scheme, users \gls{ETL} data from files prior to extracting knowledge \citep{Rilee2016, Szalay2009}.
 %In a file-centric data access scheme, users extract (files from repositories), transform (the data stored in the files into a desired shape), and load the data into a system where they can interact with
 
 Traditional file-centric data access struggles with three distinct issues:
@@ -70,16 +70,17 @@ Data is moved (really: copied) before analysis for two reasons:
 2: The analysis is based on data stored in two or more different locations. Data, therefore, is moved to integrate different datasets. 
 
 Data movement is firstly undesired since it results in uncoordinated and unstructured duplication of data and therefore in a waste of storage.
-A more concerning reason though is the increasing disparity between network speeds and compute power: User bandwidth speeds have been following Nielsen's Law \citep{Nielsen1998} and grew annually by \SI{50}{\percent} over the last 36 years while compute power has been following Moore's law \citep{Moore1975} and grew annually by \SI{60}{\percent}) for the last 40 years\footnote{\url{https://ourworldindata.org/grapher/transistors-per-microprocessor}}, which makes it increasingly attractive to move computations to the data rather than the data to the place of computation.
+A more concerning reason though is the increasing disparity between network speeds and compute power: User bandwidth speeds have been following Nielsen's Law \citep{Nielsen1998} and grew annually by \SI{50}{\percent} over the last 36 years while compute power has been following Moore's law \citep{Moore1975} and grew annually by \SI{60}{\percent}) for the last 40 years\footnote{\url{https://ourworldindata.org/grapher/transistors-per-microprocessor}}. It therefore becomes increasingly attractive to move computations to the data rather than the data to the place of computation \citep{Hey2009}, especially as data volumes grow: Researchers may choose to copy gigabytes worth of data for their analysis, but for the near future, copying petabytes will not be an option \citep{Szalay2006}.
 
 The pre-defined package size of files will in a lot of cases not equal the area of interest for the analysis. A file might for example contain data on bands, areas, or time periods not needed for the analysis. Consequently, as long as files are the smallest subset unit for extraction, a transfer overhead will arise if the area of interest does not fully cover the pre-defined package size of the file.
 
-Data have to be aligned manually when no common method to address tempo-spatial coincidence exists throughout the datasets used in an analysis. This is typically the case when data from different sources are integrated. Alignment is then manually achieved through (re-)projection, and aggregation and gridding of all used datasets into a shared schema.
+Data have to be aligned manually when no common method to address tempo-spatial coincidence exists throughout the datasets used in a given analysis. This is typically the case when data from different sources are integrated. Alignment is then manually achieved through (re-)projection, aggregation, and gridding of all used datasets into a shared schema.
 
 Through the use of common indexes, the alignment of heterogeneous data could be simplified. 
 Further, technologies like \gls{OPeNDAP} reduce the data transfer overhead by allowing
 sub-setting of files prior to transfer\footnote{The combination of both of these approaches is a subject of the proposal ``SpatioTemporal Adaptive-Resolution Encoding to Unify Diverse Earth Science Data for Integrative Analysis'' submitted to ``Advancing Collaborative Connection for Earth System Science'' (NNH17ZDA001N-ACCESS).}.
 However, the very necessity to move data prior to knowledge extraction remains intact as long as computations are not executed at the place of storage.
+
 
 \newpage
 
@@ -87,21 +88,20 @@ However, the very necessity to move data prior to knowledge extraction remains i
 On the path to a work-flow in which knowledge can be extracted from data without the necessity of prior data movement, following requirements have to be fulfilled:
 
 \paragraph{Co-location of data:}
-%Data has to be moved before analysis to integrate data from different sources. 
-To avoid data movement, all required data have to be readily co-located at the place of computation. 
+To avoid data movement and redundant \gls{ETL} processes, all required data have to be readily co-located at the place of computation. In practice, this means storing data in a database providing context and schema.
 
 \paragraph{Alignment of data:}
 The integration of heterogeneous data requires data to be aligned prior to analysis. I.e. a common concept to address spatiotemporal coincidence needs to be established throughout all the data.
 
 \paragraph{Provision of data identity:}
-By abandoning files as the package of data, a natural identity of data is lost. Identity, however, is needed to refer to, and reason about data. Regardless of previous subsetting and processing, data needs to be identifiable through citations.
+By abandoning files as the package of data, a natural identity of data is lost. Identity, however, is needed to refer to, and reason about data. Regardless of previous subsetting and processing, data therefore needs to be identifiable through citations.
 
 \subsection{Data co-location and co-alignment}
 In order to relax the necessity to move data prior to knowledge generation, all datasets required for analysis have to be readily stored at the place of computation. 
 The co-located datasets further need to be co-aligned to allow efficient interoperability \citep{Kuo2017, Rilee2016}. 
 Co-alignment means that spatiotemporal coincidence can be addressed in the same way for all datasets. 
 Co-alignment can be achieved through a common indexing schema. 
-In a simple form, this could be a regular grid . 
+In a simple form, this could be a regular grid. 
 A side-effect of co-alignment is that it can be exploited to improve physically data placement: If spatiotemporally coincidental data is stored in physical proximity, it can be processed (embarrassingly) parallel in a shared-nothing architecture\citep{Kuo2017}.
 
 Building on top of thes existing technologies of SciDB and the \gls{STARE}\footnote{STARE is a global indexing schema that is built upon the quadtree \gls{HTM}. A review of quadtrees in geospatial indexing is provided in section \ref{lit_index}.} \citep{Kuo2017}, 
@@ -126,38 +126,49 @@ I want to continue the development of this system to address the following quest
 
 \newpage
 \subsection{Data Citation}
-A natural addressable identity of data is lost as soon as files as a package of data are abandoned.
-Data identity, however, is needed to refer to and reference data, and moreover to provide hooks into the data's provenance. Provenance, in turn, allows the capability to reproduce work, which ensures trust in the data. 
-%Trust finally is required for researchers to build on top of each other's work.
+Citations help to make data \acrfull{FAIR} \citep{Wilkinson2016}. In more abstract terms, data citations provide identity to data, which allows to reference and de-reference.
+% and provides hooks into the data's provenance.
 
-Data citations can provide identity to data outside of file-centric environments and serve as an interface of trust in a heterogeneous system. 
+Provision of of identity is a key challenge in the twilight of file-centric data access, since a natural addressable identity of data is lost as soon as files as a package of data are abandoned.
 
-%In order to create seamless workflows, data citations have to be machine actionable, both in terms of creation and in terms of resolving.
+%Data citations can provide identity to data outside of file-centric environments and serve as an interface of trust in heterogeneous systems. 
 
-Data citation differ from citations of printed material in that the cited content (i.e. the data) may evolve over time and in that meta-information such as authorship or the provenance may vary within a continuous dataset. Further, since infinite ways to subset data are possible, data citations cannot be statically generated. They have to be machine-actionable, both in terms of dynamic creation (as a function of time and subsetting parameters) and in terms of resolving citations back to the cited material.
+% FORCE11 !!!
 
-I want to address the challenges of data citations by elaborating on the following questions in a data citation review:
+Data citation differ from citations of printed material in that the cited content (i.e. the data) may evolve over time and in that meta-information such as authorship or the provenance may vary within a continuous dataset. Further, since generally speaking infinite ways to subset data are possible, data citations cannot be statically generated. They have to be machine-actionable, both in terms of dynamic creation (as a function of time and subsetting parameters) and in terms of resolving data citations back to the cited material.
+
+I am addressing data citation through an extension to the OPeNDAP server reference implementation hyrax, \textit{bibdap}\footnote{\url{https://github.com/NiklasPhabian/olfs}},
+and the data citation server \textit{occur}\footnote{\url{https://github.com/NiklasPhabian/occur}}. 
+With the development of \textit{bibdap}, I want to demonstrate how a data provision service can be augmented with the capability to automatically generate and resolve machine actionable data citations subject to the datasets static metadata (stored in the \gls{DAS}), subsetting parameters, and the time of citation creation. Bibdap uses cryptographic hashes to ensure that the de-referenced citation equals the cited data. Bibdap is meant to be a concept demonstration that can be adapted to other OPeNDAP servers (e.g. TDS or pydap) and other data services such as \gls{WMS} and \gls{WCS}.
+
+\textit{Occur} is achieving the same functionality as bibdap, but is operated as a standalone serve that can be place between any OPeNDAP server and a client. Occur will forward all normal requests to the data server, but intercept and handle all citation-, and citation resolving requests. This approach enables a client to retrieve and resolve citations from a datasource that is natively not capable of handling citations and may be useful in a transition period in which not all data servers are equipped with data citation capabilities.
+
+The development of \textit{bibdap} is supported by the \gls{ESIP} federation as a 2018 \gls{ESIP} lab project. The work on \textit{bibdap} and \gls{occur} has been presented at the 2017 Bren PhD Symposium and the 2018 \gls{ESIP} summer meeting.
+
+
+I want to continue the development of bibdap and occur to address the following aspects:
 
 \begin{itemize}
-    \item   How is data cited as of today? 
-    \item   What is the status of machine-actionable data citation? 
-    \item   How are data citations resolved?
-    \item   What are the efforts of data citation standardization? 
-    \item   What information needs to be available to create a data citation?
-    \item   What information does a data citation need to contain?
-    \item   What rules are needed to create data citations?    
-    \item   How do the approaches on data citations employed by e.g. schema.org, Datalite,  EasyID, RDA, DataCite, or DataOne equal and differ?    
-    \item   What is the distinguishing difference between a data citation and a \gls{DOI}.
+ \item Improvement of client-interface: Integration of citation request into user interface and simplification of REST-syntax. Provision of options to create journal-formatted citations.
+ \item Moving citation generation and hash handling (which is currently handled by the front-end) to hyrax' back-end for improvements of performance and architectural clarity.
+ %This will include augmenting the bes command line language (bescmdln). 
+ \item Data Citation support for DAP4 (Currently, data citations are only implemented for DAP2).
+ \item Implementing native citation support to other OPeNDAP servers, e.g. pydap and \gls{TDS}.
+ \item Adding citation support for other data servers such as \gls{OGC}'s \gls{WMS}, \gls{WCS} into \gls{occur}. 
+ \item Formatting of citation responses to be \gls{CSL}-conform.
+ \item Defining guidelines on minimal metadata requirements to be included into the \gls{DAS} for successful citation generation.
+ \item Exploring possibilities for ``as-of'' data requests. In its current state, bibdap and occur will throw a warning to the client if a citation is attempted to be de-referenced and the data has changed since the generation of the citation. I want to explore and implement options to de-reference citations to data that has changed since the generation of the citation. Candidate options are caching of data requests, versioning of data, or versioning of datasets.
 \end{itemize}
 
-On the practical side, I am addressing data citation through
-the implementation of the OPeNDAP extension \textit{bibdap}\footnote{Former name: OCCUR}.
-With the development of \textit{bibdap}, I want to demonstrate how a data provision service can be augmented with the capability to automatically generate and resolve machine actionable data citations subject to the \gls{DAS} (static metadata), subsetting parameters and the time of creation. The development of \textit{bibdap} is supported by the ESIP federation as a 2018 \gls{ESIP} lab project. The concept of \textit{bibdap} has been presented at the 2017 Bren PhD Symposium.
-  
+
+
 \newpage
 
 
 \subsection{Use case}
+One of the five laws postulated by Jim Gray is that a database designed for a given discipline has to be capable to answer the 20 key questions the scientists may have \citep{Hey2009, Szalay2009}.
+Following this spirit, I want to verify the aptness of STARE flavored SciDB for earth science analysis by using it for a novel use-case.
+
 A compute system that co-locates and co-aligns datasets has its greatest utility for
 analysis of large amounts of heterogeneous data; i.e. if data of various shapes are to be integrated. An interesting and apt example is the calculation and comparison of sub-pixel snow cover and snow temperature from various observations.
 Subpixel snow cover can be calculated from satellites that measure in two or more thermal bands. These include MODIS, VIIRS, Landsat, GOES.
@@ -187,6 +198,7 @@ if data is co-located in a SciDB cluster and co-aligned through STARE prior to a
 %A night time approach and a day time approach is provided.
 %%MOD09GA: visible for forest cover (sinosoidal) *MODIS 1B for infrared (swath)
 
+\newpage
 \section{Literature Review}
 \subsection{Global indexing schemes}
 \label{lit_index}
@@ -225,6 +237,194 @@ Left justified mapping respects geometric containment by right-padding HTM binar
 The level (which in right-justified mapping is implicitly given) is specified by the last 5 bits of the 64 bit integer.
 In \citep{Kuo2017}, the authors extend their implementation with a temporal component and name the resulting universal geoscience data representation \gls{STARE}.
 \citep{Rilee2018} proposes the integration of \gls{STARE} with \gls{OPeNDAP} and to implement cloud-based science use-cases with STARE-enabled data access.
+
+\newpage
+
+\subsection{Data citation}
+In the following, I intend to explore three questions about data citations:
+
+1. Why do we need data citations \\
+2. What are data citations \\
+3. How have data citations been implemented \\
+
+
+\subsubsection{Why do we need data citations}    
+\citep{Hey2009} coin the term 4th paradigm as ``using computers to gain understanding from data created and stored in our electronic data stores [..]''.
+The 4th paradigm arises from an environment in which large amounts of data are collected 24/7 and made publicly accessible. Research is not anymore just driven by empirical, theoretical and computational approaches, but also by the exploration of vast amounts of data collected from instruments and simulations. In this context, data collection and assembly itself is a significant research activity \citep{Frew2012}.
+%We are just at the beginning of the era of the 4th paradigm and therefore a lot of challenges are still to be solved. One grave uncertainty is how we can maintain long-term data provenance and enable reproducibility throughout the end of time \citep{Hey2009}. 
+
+
+A crucial step into the 4th paradigm is to acknowledge data as first class research products. As such, they have to be persistently available, documented, citable, reusable, and possibly peer-reviewed \citep{Callaghan2012, Kratz2014}. The research community has to move from data sharing to data publishing \citep{Costello2009, Kratz2014} or, in other words, has to make data \gls{FAIR} \citep{Wilkinson2016}. However, there does not seem to be a consensus on what data publication means \citep{Kratz2014} and how data citation mechanisms, which would sufficiently motivate throughout data publishing, are to be implemented \citep{Costello2009}.
+
+More than a decade ago, \citep{AltKin07} noticed that no universal standard for data citations exists and laid out the negative consequences on scientific progress. The authors consequently proposed a set of standards to address the issues. However, years later, \citep{Altman2015, Tenopir2011} find that even though required by publishers, researchers still too often do not make data publicly available, nor cite the data consequently.
+The reasons for this are both cultural and technical: 
+
+\citep{Lawrence2011} finds that traditionally conclusions are judged, not the fitness of the data for re-interpretation. This in turn results in low appreciation for data production and publishing.
+\citep{Tenopir2011} additionally points out that organizations do not sufficiently support data management to their researchers. Even more so, the authors stress out that researchers may actually be motivated to purposefully withhold data in order to retain their own ability to publish research papers.
+
+On the technical side, robustness, openness, and uniformity in data publication are lacking \citep{Starr2015}. \citep{Tenopir2011} states that a major reason for data withholding is the effort required to publish data. 
+The ability to receive credit for data being cited may increase the motivation for researchers to publish their data \citep{Crosas2011, AltKin07}. However, there is no common agreement on the implementation of data citations, especially if subsets are to be cited or data is dynamic \citep{Kratz2014, Assante2016}. \citep{Belter2014} finds that even when used, data citation practices are inconsistent. \citep{Assante2016} illustrates the range of practices which span from exporting a formatted citation string or a generic format such as RIS or BibTex, to embedded links to the dataset, or sharing to social media. 
+
+\citep{Silvello2017} provides an exhaustive review of the current state of data citations in terms of reasons for the necessity of data citations and on current examples of data citation implementations. 
+Based on a meta-study, the author identified 6 main motivations for data citations: Attribution, Connection, Discovery, Sharing, Impact, reproducability. 
+Arguably, these motivations can be boiled down to Identity, Credit, and Access. 
+
+\paragraph{Identity:} Citations provide an identity to data, enabling to refer to and reason about data \citep{Bandrowski2016}, even if the data does no longer exist or is behind a paywall.
+
+\paragraph{Credit:}
+Citations provide a way to give credit to the authors. This allows to attribute how the data was used over time, how relevant, and how impactful it is \citep{Honor2016}. The possibility to receive credit consequently provides an incentive for sharing \citep{Niemeyer2016, Callaghan2012, Kratz2014}. Initiatives such as ``Making Data Count''\citep{Kratz2015} recognize this and supply the community with principles and implementations to obtain data usage metrics.
+
+\paragraph{Access:} 
+A citation provides information on how to retrieve the cited material (e.g. the journal, year and pages). Persistent access to data is crucial since it is the foundation of reusability and reproducability \citep{Starr2015}.
+%Data citations may provide an additional side-effect improving data accessibility: There is evidence suggesting that well curated data will be cited favorably \citep{Belter2014}. Citations therefore may be a motivating driver for researchers to sustainably curate their data and thus making them more accessible.
+
+
+
+\subsubsection{What is a data citation}
+
+A data citation provides three purposes \citep{Buneman2010}: \\
+1. Give a unique identity. \\
+2. Information about the creator. \\
+3. Information about how to access the data. \\
+
+Unique identities of data allow to connect related work and therefore enhance discoverability. Further, they enable to evaluate the relevance and impact of the dataset. The information about the creator allows the author to claim attribution of the impact, which in turn provides incentive for the author to share the dataset. The information about how to access the data facilitates the sharing and allows reproducability.
+
+Arguably, data citations may need to include a fingerprint\footnote{i.e. a hash. \citep{Crosas2011} refers to them as \gls{UNF}} to enable data integrity verification \citep{Crosas2011} and that a given dataset equals the referenced data.
+
+Data citations further should be machine-actionable \citep{Assante2016, Altman2015, Buneman2016}, both in terms of creation and resolving and in terms of identification.
+
+Literature frequently appears to confuse and intermix identity with access. While resolvable \glspl{URL} or \glspl{DOI} may provide a unique identity handler and an access mechanism at the same time, identity and access remain two distinct facets of a citation. There is utility in data identity regardless of whether or not the data can be accessed or even still exists.
+
+\subsubsection{Solutions and implementations:}
+\citep{Silvello2017} considers that regardless of implementation, data citation system should fulfill four functions: Identify the dataset and subset, attribute credit, assure persistence/fixity, and create citation snippets.  
+
+Data citations have to accommodate the structured nature of data, the fact that data may change over time and that users may need to refer to subsets of data (varying granularity) \citep{Buneman2010}.
+
+A handful of exemplary implementations exist, addressing the aforementioned challenges.
+I want to distinguish the differences in data citation implementations in three different aspects: \\
+a) (How) is fixity is assured 
+b) (How) are evolving datasets handled? \\
+c) (How) can subsets of datasets be cited (AKA granularity)? \\
+d) What information does a citation contain and how are human readable citation snippets/strings generated.
+d) Access
+
+The way these aspects are solved depend widely on the domain and the particular dataset characteristics in terms of data complexity (table/arrays vs graphs), data volume (\si{\kilo\byte} vs \si{\peta\byte}), and update frequency as well as the characteristics of the repository in terms of subsetting capabilities and the typical use.
+
+\paragraph{Identity:}
+Generally speaking, a unique identity could be provided by an arbitrary string (e.g. a filename \citep{Buneman2016}) given that it is unique.
+In practical terms \citep{AltKin07} suggests the identity to double as a handle to the data by having it associated with a naming resolution service, e.g. through the use of \gls{DOI},  \gls{LSID}, \gls{URN}, \gls{HNR}\footnote{\url{http://www.handle.net/}}, or \gls{URL}.
+
+The question arises at which level/granularity a PID is to be minted.
+In order to discuss different options, \citep{Buneman2010} introduce the concept of a ``citable unit''. A citable unit is the context of an object of interest. The object of interest could be a fact that is stated in e.g. a scientific paper (or a subset within a dataset). The authors argue against creating identifiers for every object of interest, but rather to wisely choose the granularity of the citable unit. A citation of an object can then be created by appending the identity of the citable unit with information about the location of the object within the citable unit.
+ 
+In the Dataverse \cite{Crosas2011}, each ``study'' is assigned with an identifier. A citation may reference more than one dataset in the study and/or reference a subset of a dataset.
+
+\citep{Rauber2015} suggest to identify the queried subset by storing query accompanied with a \gls{PID}, which can be resolved e.g. to landing page and/or the dataset.
+
+\citep{Bandrowski2016} use RRID's as to uniquely identify datasets. An RRID is a simple alphanumeric string comprised of the prefix ``RRID:'' and the accession number. 
+
+%%%%%%%%%%%%%%%% 
+\paragraph{Subsetting/Granularity/Pre-processing}
+In contrary to traditional publications, the granularity of referenced data vary \cite{Davidson2017}: Queries may produce an infinite number of subsets from a single dataset.
+\citep{AltKin07} uses the term ``deep citation'' to describe the ability to reference subsets of data. Since methods and syntax for subsetting depend on the individual repository technology, the authors suggest to cite the entire dataset and append it with a textual description of how the dataset was subsetted and a \gls{UNF} for the subset. The authors further suggest that if significant pre-processing is done on the dataset, it should be stored and cited individually. Dataverse follows these suggestions in their implementation.
+
+\citep{Buneman2016} suggest to use views of relational databases as citable units. A citation is in this context comprised of the metadata associated with the database and the query.
+
+\citep{Bandrowski2016} choose to have citations point to the entire dataset and not to a particular subset. The reasoning for this is that the author's motivation is to track broad usage patterns.
+
+
+%%%%%%%%%%%%%%%%%%%%
+\paragraph{Fixity}
+Data fixity is the property of a data to remain unchanged. 
+Fixity checking allows to verify that data has not changed and therefore can be used to ensure that a citation references the data as of the time of the citation creation.
+Data may change unintentionally through data rot or malicious manipulation or intentionally, due to updates or appendation. 
+%The latter should ideally be solved through a versioning or timestamping mechanism allowing to distinguish between versions of data (see next paragraph).
+
+Though mentioned in most papers addressing data citation systems (e.g. \citep{Buneman2016, Davidson2017}), only few data citation systems address fixity.
+
+\citep{AltKin07} suggests to create \gls{UNF} for each citation, allowing a verification of fixity. This suggestion is implemented by Dataverse \citep{Crosas2011}.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\paragraph{Revisable data}
+Datasets may evolve over time through updates and appendation. In the following, I will refer to these datasets as revisable data and want to delimit the term from data that changes over time due to malicious manipulation or through data rot.
+
+Changes of data can be identified through several approaches: \\
+a) Through a policy prescribing the publisher to indicate changes in the data with version increments. \\
+b) Through recording and timestamping any change in the data. \\
+c) Fixity checking. \\
+
+Versioning may be the most widespread approach for dealing with revisable data. Versioning is intuitive and can trivially be implemented e.g. through file naming\footnote{\url{https://library.stanford.edu/research/data-management-services/data-best-practices/data-versioning}}.
+However, versioning itself is a can of worms. Since versioning is merely a \textit{policy}, there is no guarantee for enforcement. Further, ``There is currently no agreed standard or recommendation among data communities as to why, how and when data should be versioned''\footnote{\url{https://www.ands.org.au/working-with-data/data-management/data-versioning}}.
+
+
+
+Changes of data can be identified through fixity checking. The fixity challenge therefore is connected to accommodating citations to revisable data. 
+Fixity checking however merely allows to identify \textit{if} data has changed, but neither provides insight on how it changed, nor allows 
+
+
+- Do we care about versions if subsets have changed?
+- What if V1!=V2 but V1=V3
+- Versioning is a policy 
+
+
+\citep{Buneman2010} suggest that a dataset has to remain accessible once it has been cited. Therefore dynamic data has to be versioned in order to make it citable.
+In their implementation, a citation can include a version number, allowing the citation system to select the according snapshot.
+
+Versioning and change recording can allow users to retrieve older states of a datasets. Depending on whether or not older states are retrievable, there are two approaches to deal with dynamic data:
+a) Provide clients with a warning if the citation references to data that has changed since the creation of the citation. \\ 
+b) Include version (or time) information into a citation and ensure that a citation de-references to the as-of version of the data.
+
+\citep{AltKin07} suggest to treat different version of datasets as separate data sets and cite them independently.
+
+Dataverse \citep{Crosas2011} citations optionally can contain a dataset version number.
+
+\citep{AltKin07} further suggest that for large datasets, versioning can be implemented by merely storing deltas/increments, an approach implemented by \citep{Alawini2017}. The authors created a citation service for the eagle-iV database. Since this database itself does not version its data (only most recent version is visible), the authors implemented a service that versions eagle-iV data in order to provide fixity to the users. The service tracks and stores every change in the original dataset. This approach is economic in terms of storage since only changes are tracked. The authors note that this approach is viable for eagle-iV since the dataset changes very slowly.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%
+\paragraph{Access}
+\citep{AltKin07} suggest a citation to contain an identifier that can be resolved to a landing page (not to the data itself). The landing page in turn should contain a link to the data resource. The advantage is that the identifier can be resolved regardless of whether the data is behind paywall, or does not exist anymore.
+
+URL, DOI, ARC, PURLd
+
+%%%%%%%%%%%%%%%%%%%%%%%
+\paragraph{Format}
+Data citation systems should be capable to generate human readable citation strings in order to facilitate the use of data citations \cite{Buneman2016}.
+
+Dataverse \citep{Crosas2011} follows the recommendations of Altman and King \citep{AltKin07}.
+A citation contains ``author(s), distribution date, title, global persistent identifier and url, universal numerical fingerprint (UNF), and optional fields such as the distributor, data subsets, and versions.''
+
+\citep{AltKin07} recommends that a citation should contain an identifier that can be resolved to a landing page which will contain a textual representation of the citation.
+
+\citep{Buneman2016} create simple rules to format citations into JSON strings.
+
+
+
+- DataCite schema 
+- Dublin core
+
+\citep{Alawini2017}: JSON, XML, RIS, Bibtex. 
+DataCite format does not one-size fits it all.
+
+\cite{Rauber2015} proposes that repositories should version the stored data and timestamp operations on the data. The authors further suggest repositories to persistently 
+
+The Joint Declaration of Data Citation Principles \citep{Altman2015, Starr2015} suggests eight aspects that repositories should consider for the implementation of data citations.
+
+- Scientific publishers (Elsevier, PLoS, Springer, Nature) list data citation guidelines \citep{Silvello2017}
+- Incentives to define shared data citation methodology by
+(CODATA, 2013; FORCE11, 2014; RDA, 2015)
+
+
+  - mendeley data \url{https://data.mendeley.com/}  
+  - datacite
+  - pubmed \url{https://www.ncbi.nlm.nih.gov/}
+  - figshare
+  - dryad
+  - dataverse
+  - CSIRO https://data.csiro.au/dap/home?execution=e1s1
+  - Zenodo https://zenodo.org/
+
 
 \newpage
 \section{Reading List}
