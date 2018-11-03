@@ -202,6 +202,8 @@ I further intend to explore advancements of \gls{MODSCAG}: Jeff Dozier is curren
  \item \gls{MODSCAG}'s spectral analysis is solely based on the shape of the spectra, not by their absolute values. This allows \gls{MODSCAG} to disregard the illumination angle and hence the terrain. This is a great advantage of \gls{MODSCAG} since it allows the algorithm to produce results in mountainous regions in which the terrain is not known at a sufficient resolution. However, by disregarding the absolute reflectance, distinguishing between dirty and fresh snow becomes blurry as both small grain sizes and dirt reduce the difference between reflectance in \gls{NIR} and \gls{SW} of snow. Instead of only using the relative shapes of the spectra, the new algorithm solves for the zenith angles of the terrain through comparison of temporarily close apparent reflectance measurements of the same area with varying viewing and solar angles. This allows to estimate the actual absolute reflectances and therefore to distinguish more accurately between dirty and fresh snow.
 \end{enumerate}
 
+As of now, the algorithm is being tested on hyperspectral \gls{AVIRIS} data, which is only sparsely available. I intend to implement the algorithm in SciDB leveraging \gls{STARE} to work with multispectral data from \gls{MODIS}, \gls{VIIRS}, \gls{GOES} and/or Himawari 8.
+
 
 \newpage
 \section{Literature Review}
@@ -594,7 +596,7 @@ To overcome these and other issues, \cite{Dozier2008} developed a space-time int
 \nocite{Silberschatz2005} 
 
 
-% \subsection{}
+
 
 
 
