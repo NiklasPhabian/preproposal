@@ -55,13 +55,13 @@ to obtain knowledge form environmental data.
 The appearance of cloud computing, characterized by scalability on one side, 
 and by abstraction and stereotyping of interactions through services and \glspl{API} on the other side \citep{Foster2017}, 
 provides for opportunities in environmental informatics. 
-At the same time, it opens up questions of what the workflow
-of environmental scientists should look like to fully exploit these opportunities.
+At the same time, it opens up questions about what the workflow
+of an environmental scientists of the 21st century should look like to fully exploit these opportunities.
 
 My thesis is that the inherent heterogeneity of the flow from data to knowledge
 in the environmental sciences causes bottlenecks that can be unblocked through 
 infrastructures leveraging cloud computing. 
-In my dissertation, I want to address the twilight of file-centricity\footnote{German: Dateidämmerung \textipa{[\textsubring{d}a'ta\textsubcircum{i}'dEm@\;RUN]}} and technologies required to transition to data-centricity.
+In my dissertation, I want to address the ``twilight of file-centricity''\footnote{German: Dateidämmerung \textipa{[\textsubring{d}a'ta\textsubcircum{i}'dEm@\;RUN]}} and technologies required to transition to data-centricity.
 
 Files package (i.e. chunk or aggregate) data into logical units and provide an intelligible identity to their content: Their filename\footnote{Using the conventions of \gls{MODIS} filename as data identity was e.g. exploited by MODster \citep{Frew2005, Frew2002} to managed distributed data}.
 Files further conceal the structure of the data, which allows repositories to preserve and distribute data structure-agnostically. 
@@ -78,8 +78,7 @@ Data movement however is undesired since it results in uncoordinated and unstruc
 Further, we are facing an increasing disparity between network speeds and compute power\footnote{User bandwidth speeds have been following Nielsen's Law \citep{Nielsen1998} and grew annually by \SI{50}{\percent} over the last 36 years while compute power has been following Moore's law \citep{Moore1975} and grew annually by \SI{60}{\percent} for the last 40 years. Source:\url{https://ourworldindata.org/grapher/transistors-per-microprocessor}}, making it less and less attractive and ultimately infeasible to move data to the point of computation \citep{Hey2009}, especially as data volumes grow: While researchers may choose to copy gigabytes worth of data for their analysis, copying petabytes will not be an option in the near future \citep{Szalay2006}.
 
 The pre-defined package size of files hereby make matters worse: If the package size does not exactly equal the area of
-interest for an analysis \citep{Gray2002}\footnote{A file might for example contain bands, areas, or time periods not needed for the analysis}, a
-transfer overhead will arise.
+interest for an analysis \footnote{A file might for example contain bands, areas, or time periods not needed for a given analysis.}, a transfer overhead will arise \citep{Gray2002}.
 
 \paragraph{Data Alignment:}
 Since files allow repositories to be agnostic of data structures, it removes the repositories from the obligation to address data alignment.
@@ -90,7 +89,7 @@ Because methods for alignment are not provided from a central point (i.e. the re
 
 \vspace{1cm}
 
-In order to break the stated bottlenecks, the file centric approach has to be replaced by a system that:
+In order to break the stated bottlenecks, the file-centric approach has to be replaced by a system that:
 \begin{itemize}
     \item is capable of providing identity to data independently of the packaging.
     \item does not require manual data alignment.
@@ -101,42 +100,37 @@ In order to break the stated bottlenecks, the file centric approach has to be re
 \newpage
 
 \section{Work Plan}
-I want to address the following challenges to spur the twilight of file-centric workflows:
+I want to address the following challenges to spur the twilight of file-centricity.
 
-\paragraph{Provision of data identity (Data Citations):}
-By abandoning files as the package of data, a natural identity of data is lost. Identity, however, is needed to refer to, and reason about data. Regardless of previous subsetting and processing, data needs to be identifiable through citations. In my dissertation, I want to develop methods to provide identity and simplify the creation of citations to data stored in online repositories.
+\paragraph{Provision of data Identity and Citations:}
+By abandoning files as the package of data, a natural identity of data is lost. Identity, however, is needed to refer to, and reason about data. Regardless of previous subsetting and processing, data needs to be identifiable and citable. In my dissertation, I want to develop services providing identity and simplifying the creation of citations to data stored in online repositories and accessible through \glspl{API} (rather than through file downloads).
 
-\paragraph{Co-location and Co-alignment of data:}
-To avoid data movement and redundant \gls{ETL} processes, all required data have to be readily co-located at the place of computation. In practice, this means storing data in a database providing context and schema.
-The integration of heterogeneous data requires data to be aligned prior to analysis. I.e. a common concept to address spatiotemporal coincidence needs to be established throughout all the data. The \gls{STARE}\footnote{STARE is a global indexing schema that is built upon the quadtree \gls{HTM}. A review of quadtrees in geospatial indexing is provided in section \ref{lit_index}.} provides such a common concept and SciDB\footnote{\url{https://www.paradigm4.com/}} is a candidate database capable of handling large volumes of \gls{STARE}-indexed data.
-In my dissertation, I want to contribute to the \gls{STARE} prototype maturing and testing by:
-
-\begin{itemize}
- \item elaborating on pixel indexing strategies
- \item exploring the operation of \gls{STARE}-SciDB in queue-driven \gls{HPC} environments
- \item abstracting of \gls{STARE}-SciDB in higher programming languages.
-\end{itemize}
-
+\paragraph{Data co-location and co-alignment:}
+To avoid movement, data has to be readily co-located at the place of computation. To further make \gls{ETL} processes unnecessary, the co-located, and potentially heterogeneous data also has to be co-aligned. I.e. a common concept to address spatiotemporal coincidence needs to be established throughout all the data. In practice, this means storing data in a database providing indexes, contexts, and schemas.
 
 \paragraph{Use Case (Multi-sensor snow mapping):}
-One of the five laws postulated by Jim Gray is that a database designed for a given discipline has to be capable to answer the 20 key questions the scientists may have \citep{Hey2009, Szalay2009}.
-Following this spirit, I want to verify the aptness of \gls{STARE} flavored SciDB for earth science analysis by using it for multi-sensor snow mapping.
+One of the five laws postulated by Jim Gray is that a database designed for a given discipline has to be capable to answer the 20 key questions a scientists may have \citep{Hey2009, Szalay2009}.
+Following this spirit, I want to verify the aptness of the previously proposed system for the use in environmental science by using it for multi-sensor snow mapping. 
 
 \newpage
 
-\subsection{Provision of data identity (Data Citations)}
+\subsection{Provision of data Identity and Citations}
 Citations help to make data \acrfull{FAIR} \citep{Wilkinson2016}. In more abstract terms, data citations provide identity to data, which allows referencing and de-referencing.
 
-Provision of identity is a key challenge in the twilight of file-centric data access, since a natural addressable identity of data is lost as soon as files as a package of data are abandoned.
+Provision of identity is a key challenge in the twilight of file-centric workflows, since a natural addressable identity of data is lost as soon as files as a package of data are abandoned.
 
-Data citations differ from citations of printed material in that the cited content (i.e. the data) may evolve over time and in that meta-information such as authorship or the provenance may vary within a continuous dataset. Further, since generally speaking infinite ways to subset data are possible, data citations cannot be statically generated. They have to be machine-actionable, both in terms of dynamic creation (as a function of time and subsetting parameters) and in terms of resolving data citations back to the cited material.
+Data citations differ from citations of printed material in that the cited content (i.e. the data) may evolve over time and in that meta-information such as authorship or the provenance may vary within a continuous dataset \citep{Buneman2016}. Further, since generally speaking infinite ways to subset data are possible, data citations cannot be statically generated. They have to be machine-actionable, both in terms of dynamic creation (as a function of time and subsetting parameters) and in terms of resolving data citations back to the cited material.
 
-I am addressing data citation through an extension to the \gls{OPeNDAP} \citep{Gallagher2005} server reference implementation hyrax, \textit{bibdap}\footnote{\url{https://github.com/NiklasPhabian/olfs}},
-and the web-service \textit{occur}\footnote{\url{https://github.com/NiklasPhabian/occur}, \url{http://occur.duckdns.org}}. 
-With the development of \textit{bibdap}, I want to demonstrate how a data provision service can be augmented with the capability to automatically generate and resolve machine actionable data citations subject to the dataset's static metadata (stored in the \gls{DAS}), subsetting parameters, and the time of citation creation. Bibdap uses cryptographic hashes to ensure that the de-referenced citation equals the cited data. Bibdap is meant to be a concept demonstration that can be adapted to other \gls{OPeNDAP} servers (e.g. \gls{TDS} or pydap) and other data services such as \gls{WMS} and \gls{WCS}.
+Technologies such as \gls{WMS}, \gls{WCS}, and\gls{OPeNDAP} \citep{Gallagher2005} play a key role in the twilight of file-centricity. Their ability to seamlessly provide access to data rather than to files provides an ideal starting point for theoretical and practical excursions on how to address identity and citations in a data-centric workflow. 
+
+With the development of the hyrax\footnote{hyrax is the \gls{OPeNDAP} server reference implementation} extention \textit{bibdap}\footnote{\url{https://github.com/NiklasPhabian/olfs}} as well as the web-service \textit{occur}\footnote{\url{https://github.com/NiklasPhabian/occur}, \url{http://occur.duckdns.org}}, I am exploring an approach of a technical solution for identity preservation and citation generation to data (rather than to files).
+
+Bibdap demonstrates how a data provision service can be augmented with the capability to automatically generating and resolving machine actionable data citations subject to the dataset's static metadata\footnote{In \gls{OPeNDAP}'s case, this metadata is stored in the \gls{DAS}}, subsetting parameters, and the time of citation creation. Bibdap is meant to be a concept demonstration that can be adapted to other \gls{OPeNDAP} servers (e.g. \gls{TDS} or pydap) and other data services such \gls{WMS} and \gls{WCS}.
 
 \Gls{occur} is a webservice that allows users to convert \gls{OPeNDAP} queries into formatted citation snippets, much like \url{www.crosscite.org} provides a service for \glspl{DOI}.
 \gls{occur} enables a user to retrieve and resolve citations from a datasource that is natively not capable of handling citations and may be useful in a transition period in which not all data servers are equipped with data citation capabilities. \gls{occur} extracts metadata from the \gls{DAS} of the \gls{OPeNDAP} resources, but also allows queries to be decorated with \glspl{DOI} to associate external metadata to a dataset. \gls{occur} further allows users to store citations. A stored citation can later be resolved through \gls{occur}, whereby \gls{occur} will verify that the data has not changed and therefore assures fixity. By storing citations at a central location uniqueness can be negotiated: \gls{occur} will detect and merge citations to the exact same data.
+
+Both bibdap and OCCUR use cryptographic hashes to ensure that the de-referenced citation equals the cited data.
 
 The development of \textit{bibdap} and \gls{occur} is supported by the \gls{ESIP} federation as a 2018 \gls{ESIP} lab project. The work on \textit{bibdap} and \gls{occur} has been presented at the 2017 Bren PhD Symposium and the 2018 \gls{ESIP} summer meeting.
 
@@ -145,7 +139,7 @@ I want to continue the development of bibdap and occur to address the following 
 
 \begin{itemize} 
  \item Move bibdap's citation generation and hash handling (which is currently handled by the front-end) to hyrax' back-end for improvements of performance and architectural clarity.
- %This will include augmenting the bes command line language (bescmdln). 
+ \item Have occur request data hashes from the data source instead of calculating the hashes itself. While not likely to be possible with legacy protocols, DAP4 specifications provide for the possibility to request data hashes. 
  \item Add data Citation support for DAP4 (Currently, data citations are only implemented for DAP2) to bibdap.
  \item Add citation support for other data servers such as \gls{OGC}'s \gls{WMS}, \gls{WCS} into \gls{occur}.  
  \item Defining guidelines on minimal metadata requirements to be included into the \gls{DAS} for successful citation generation.
@@ -156,53 +150,70 @@ I want to continue the development of bibdap and occur to address the following 
 \newpage
 
 \subsection{Data co-location and co-alignment}
-In order to relax the necessity to move data prior to knowledge generation, all datasets required for analysis have to be readily stored at the place of computation. 
-The co-located datasets further need to be co-aligned to allow interoperability \citep{Kuo2017, Rilee2016}. 
-Co-alignment means that spatiotemporal coincidence can be addressed in the same way for all datasets. 
+In order to relax the necessity to move data prior to knowledge generation, all datasets required for any given analysis have to be readily co-located at the place of computation. 
+The co-located datasets further need to be co-aligned to allow interoperability \citep{Kuo2017, Rilee2016} and make \gls{ETL} processes unnecessary.
+Co-alignment means that a common concept to address spatiotemporal coincidence throughout all datasets exists. 
 Co-alignment can be achieved through a common indexing schema. 
-In a simple form, this could be a regular grid. 
-A side-effect of co-alignment is that it can be exploited to improve physical data placement: If spatiotemporally coinciding data is stored in physical proximity, it will, for a lot of use-case, be possible to process the data (embarrassingly) parallel in a shared-nothing architecture \citep{Kuo2017}.
+A side-effect of co-alignment is that it can be exploited to improve physical data placement: If an index is used to 
+store spatiotemporally coinciding data in physical proximity, it will, for a lot of use-case, be possible to process data (embarrassingly) parallel in a shared-nothing architecture \citep{Kuo2017}.
 
-Building on top of the existing technologies SciDB and the \gls{STARE} \citep{Kuo2017}, 
-I started to develop a system that co-locates and co-aligns data at the place of computation. I have presented the findings of an early stage of a system that indexes and stores \gls{MODIS}-swath data in a SciDB cluster during an oral presentation at the AGU Fall meeting 2017.
+\gls{STARE}\footnote{STARE is a global indexing schema that is built upon the quadtree \gls{HTM}. A review of quadtrees in geospatial indexing is provided in section \ref{lit_index}.} \citep{Kuo2017} provides such a common concept to address spatiotemporal coincidence for environmental data, while SciDB\footnote{\url{https://www.paradigm4.com/}} is a candidate database capable of handling large volumes of \gls{STARE}-indexed data.
 
-I want to continue the development of this system to address the following questions:
-\begin{itemize}
-%\item How does a system that leverages \gls{STARE} within SciDB compare to google earth engine and the \gls{DGGS} \citep{OpenGeospatialConsortium2017}?
-%\item How should SciDB schemas be designed to store STARE-indexed data for various sensors (e.g. MODIS, VIRRS, Landsat, point measurements, ASO)?
-%\item How can data from a variety of sensors be efficiently STARE-indexed and loaded into SciDB?
-% \item How can SciDB chunking sizes be optimized for data of unknown sparseness?
-% \item How can a file-view (e.g. \gls{HDF}) onto data stored in SciDB be realized for purposes of legacy compatibility.
- \item What are the relevant criteria to decide on the indexing method for (swath) pixels? Pixels can be indexed through tessellation or through indexing of the centroids. However, how can we quantify the loss of accuracy for the different methods, and how can we quantify the storage and compute overhead for pixels indexed through tessellation? 
- \item How can (\gls{STARE}-)SciDB be operated in a queue manager driven \gls{HPC} environment? Traditionally, SciDB is run on dedicated shared-nothing hardware. However, in \gls{HPC} environments such as UCSB's Knot cluster, hardware are shared among a wide community of users through queue managers that do not allow for resources to be reserved by a DBMS. I want to explore possibilities to execute (\gls{STARE})-SciDB queries inside such an environment.
- \item How can the interactions with \gls{STARE}-indexed data stored in SciDB be abstracted from high level programming languages, much like the anticipated capabilities of STARS (\url{https://github.com/r-spatial/stars}) and openEO \url{http://openeo.org/}?
-\end{itemize}
+Building on top of SciDB and \gls{STARE}, I started to develop a system that co-locates and co-aligns data at the place of computation. I have presented the findings of an early stage of a system that indexes and stores \gls{MODIS}-swath data in a SciDB cluster during an oral presentation at the \gls{AGU} Fall meeting 2017.
 
+In my dissertation, I want to contribute to the maturing of the use of \gls{STARE} flavored SciDB in environmental sciences. In particular, I want to exhibit and generalize interactions between scientist and \gls{STARE}-SciDB that will likely occur in the environmental science workflow. For these generalized interactions, I will define schema recommendations, good practices, and build abstractions and primitives within SciDB and higher programming languages\footnote{Seminally to the anticipated capabilities of STARS (\url{https://github.com/r-spatial/stars}) and openEO \url{http://openeo.org/}?}.
+
+My work will further tangentially address the exploration of data loading pipelines, SciDB chunking sizes, pixel indexing strategies\footnote{Pixels can be indexed through tessellation or through indexing of the centroids. However, how can we quantify the loss of accuracy for the different methods, and how can we quantify the storage and compute overhead for pixels indexed through tessellation?} 
+as well as the operation of \gls{STARE}-SciDB in queue-driven \gls{HPC} environments\footnote{Traditionally, SciDB is run on dedicated shared-nothing hardware. However, in \gls{HPC} environments such as UCSB's Knot cluster, hardware are shared among a wide community of users through queue managers that do not allow for resources to be reserved by a DBMS. I want to explore possibilities to execute (\gls{STARE})-SciDB queries inside such an environment.}.
 
 \newpage
 
+
+
 \subsection{Use case (Multi-sensor snow mapping)}
-A compute system that co-locates and co-aligns datasets has its greatest utility for
-analysis on heterogeneous data; i.e. if data of various shapes are to be integrated. An example is the calculation and comparison of sub-pixel snow cover from data captured by various sensors.
+In order to verify the usability of the previously proposed solution of STARE-SciDB in environmental science, I am going to use it to solve an environmental science  domain use case. Besides solving a domain problem, the work on this uses case will enable me to exhibit some of the aforementioned typical interactions between environmental scientists and SciDB-STARE.
+In particular, I want to implement a snow mapping system that incorporates low level (swath) data from multiple sensors. The reason for the use of multiple sensors is twofold. Firstly, it allows for cross verification of results. This is a requirement for the development and testing of novel snowmapping algorithms. Secondly, the use of multiple sensors increases the aggregated revisit rates, therefore increasing the temporal and/or spatial resolution of snowmaps\footnote{In the sense of a pendant to \glspl{HRPP}, which are designed to provide the best precipitation estimate at any given time using data from multiple satellites \citep{Lettenmaier2015}}.
+The use of lower level products on the other hand will avoid artifacts caused by resampling and further increase the spatial and temporal resolution by circumventing the pre-defined gridding of higher level products\footnote{High level products use a referencing matrix that provides information on coordinates of an image corner, pixel spacing, and rotation and thereby allows calculation of the coordinates of any point in the image. However, translating imagery acquired from satellite into such a coordinate system requires resampling of the measured radiances, thereby risking introduction of artifacts into the data.}. Additionally, it will allow for the integration of products that are only available at lower levels, such as the MODIS thermal bands from calibrated radiance (MOD02KM / MYD02KM).
 
-\cite{Painter2009} describe the \gls{MODSCAG} algorithm to retrieve sub-pixel snow cover data as well as grainsize and albedo estimates from MOD09GA (level \gls{L2G}\footnote{L2G is the ``Level 2G'' format, which is geolocated, and gridded into a map projection}) data. 
 
-\gls{MODSCAG} could be employed to use \gls{MODIS} level 2 (swath) data, and data from \gls{VIIRS}, \gls{AVIRIS}, Landsat, \gls{GOES}, or Himawari 8. There appears to be an opportunity to utilize \gls{STARE}-spiced SciDB to load data from a variety of sensors and produce and compare snowmaps from these data. In addition to space-born sensors, the integration of in-situ measures from snow-tracks or snow pillows, as well as airborne measurements from \gls{AVIRIS} and the \gls{ASO} can be integrated for cross-verification.
+Multi-sensor sub-pixel snowmapping is an interesting use case to test STARE-SciDB two reasons.
+Firstly, \gls{STARE} is assumed to facilitate the integration of inhomogeneous data from various sensors at different spatial and temporal resolutions. 
+Secondly, \gls{STARE} is assumed to facilitate the integration of lower level swath products, which are otherwise cumbersome to work with. Both of these assumptions can be verified in this use case.
 
-The research question that I therefore want to answer in this context is: Can the effort to extract knowledge from these heterogeneous data sources be reduced if data is co-located in a SciDB cluster and co-aligned through \gls{STARE} prior to analysis.
+\paragraph{Use of swath data:}
+\gls{MODSCAG}, as described by \citep{Painter2009}, is an algorithm based on linear endmember unmixing to retrieve sub-pixel snow cover data as well as grain size and albedo estimates from MOD09GA (level \gls{L2G}\footnote{L2G is the ``Level 2G'' format, which is geolocated, and gridded into a map projection.}) data. 
+Using gridded data allows to ignore issues connected to the wide viewing geometry of MODIS causing a) variations in pixel sizes in scan directions and b) anisotropic reflectances at shallow viewing angles. I  propose to relax these simplification by porting MODSCAG to use MODIS swath data (MOD09) within STARE-SciDB.
 
-As part of the project ''SpatioTemporal Adaptive-Resolution Encoding to Unify Diverse Earth Science Data for Integrative Analysis'' submitted to ``Advancing Collaborative Connection for Earth System Science'' (NNH17ZDA001N-ACCESS), I will compare the performance of \gls{MODSCAG} \citep{Painter2009} executed on \gls{STARE}-indexed \gls{HDF} files and executed on \gls{STARE}-indexed SciDB arrays.
+\paragraph{Inclusion of other sensors:}
+MODSCAG has already been adapted to VIIRS and Landsat TM. I propose to implement MODSCAG for these and other multispectral sensors, such as \gls{GOES}-16/17, FengYun-4a, or Himawari-8/9 in STARE-SciDB. I hereby expect STARE to provide a technology facilitating the access and comparison of results of spatiotemporal coincidence. In addition to these space-born sensors, I will import Landsat 8 data, in-situ measures from snow-tracks or snow pillows, as well as airborne measurements from \gls{AVIRIS} and the \gls{ASO} to STARE-SciDB for cross-verification.
 
-For this exercise, I will port the \gls{MODSCAG} algorithm to work on MOD09 (swath) data through the use of \gls{STARE}. I will \gls{STARE}-index a significant collection of MOD09 data for an apt region of interest (e.g. Tuolumne Basin, Merced Basin, or San Joaquin in the eastern Sierra Nevada or and/or a Himachal Pradesh in India). For verification purpose, I will index Landsat \gls{TM} data for the same geospatial and temporal extend.
+\paragraph{From \gls{MODSCAG} to \gls{SCAGD}:}
+I propose to contribute to the development of \gls{SCAGD}, an alternative/advancement of \gls{MODSCAG}, which is currently under development by Jeff Dozier.
+\gls{SCAGD} implements four difference to \gls{MODSCAG}:
 
-I further intend to explore advancements of \gls{MODSCAG}: Jeff Dozier is currently working on a non-linear approach to retrieve sub-pixel snow cover from \gls{AVIRIS} data. There are three major difference in the new approach:
 \begin{enumerate}
- \item Instead of optimizing a combination of pre-calculated canopy-top snow endmember, the new algorithm will solve for snow parameters (grain size and impurities).
- \item Instead of selecting non-snow (rock, soil, vegetation, lake ice) endmembers from a library, the algorithm will use each pixels' summer spectrum to define the non-snow part of the mixed spectra.
- \item \gls{MODSCAG}'s spectral analysis is solely based on the shape of the spectra, not by their absolute values. This allows \gls{MODSCAG} to disregard the illumination angle and hence the terrain. This is a great advantage of \gls{MODSCAG} since it allows the algorithm to produce results in mountainous regions in which the terrain is not known at a sufficient resolution. However, by disregarding the absolute reflectance, distinguishing between dirty and fresh snow becomes blurry as both small grain sizes and dirt reduce the difference between reflectance in \gls{NIR} and \gls{SW} of snow. Instead of only using the relative shapes of the spectra, the new algorithm solves for the zenith angles of the terrain through comparison of temporarily close apparent reflectance measurements of the same area with varying viewing and solar angles. This allows to estimate the actual absolute reflectances and therefore to distinguish more accurately between dirty and fresh snow.
+
+ \item Instead of optimizing a combination of pre-calculated snow endmembers, \gls{SCAGD} non-linearly solves for snow parameters (grain size and impurities). 
+ 
+ \item \gls{MODSCAG} selects the reference (i.e. non-snowcovered) reflectance spectrum from a library. In contrary, \gls{SCAGD} extracts the reference reflectance spectrum of each pixel either from its history (i.e. summer) or from adjacent pixels. In that regards, it will become irrelevant what the reference endmember is (rocks, dirt, vegetation).  
+ 
+ \item \gls{MODSCAG}'s spectral analysis is solely based on the shape of the spectra, not on their absolute values. This allows \gls{MODSCAG} to disregard the illumination angle and hence the terrain. This allows \gls{MODSCAG} to produce results in mountainous regions in which the terrain is not known at a sufficient resolution. 
+ However, by disregarding the absolute reflectance, distinguishing between dirty and fresh snow becomes blurry as both small grain sizes and dirt reduce the difference between reflectance in \gls{NIR} and \gls{SW} of snow.  
+ Instead of only using the relative shapes of the spectra, \gls{SCAGD} uses the actual absolute reflectances. In general, recovering absolute reflectances is a challenge in mountains since the illumination angles generally are unknown since \gls{DEM} are not precises enough to represent the rough terrain. 
+ \gls{SCAGD} estimates the absolute reflectances by solving for the zenith angles of the terrain through comparison of temporarily close apparent reflectance measurements of the same area with varying viewing and solar angles and under the assumption of snow behaving as a lambertian surface.
+ By using the actual absolute reflectances \gls{SCAGD} can distinguish between dirty and fresh snow more accurately.
+ 
+ \item Independently of knowledge about illumination angle, grain size might be obtainable from the attenuation dip in the spectrum. 
+ 
 \end{enumerate}
 
-As of now, the algorithm is being tested on hyperspectral \gls{AVIRIS} data, which is only sparsely available. I intend to implement the algorithm in SciDB leveraging \gls{STARE} to work with multispectral data from \gls{MODIS}, \gls{VIIRS}, \gls{GOES} and/or Himawari 8.
+ 
+As of now, the algorithm is implemented and tested on hyperspectral \gls{AVIRIS} and \gls{AVIRIS-NG} data, which is only sparsely available. Further. it is unclear weather part 3 and 4 of the above mentioned characteristics of \gls{SCAGD} can reliably produce results, especially when using lower resolution data. To investigate this question, I intend to implement \gls{SCAGD} in STARE-SciDB to work with multispectral data from \gls{MODIS}, \gls{VIIRS}, \gls{GOES} and/or Himawari 8.
+
+
+I will carry out the above mentioned undertakings as part of NASA's \gls{ACCESS}\footnote{Funding Opportunity Number: NNH17ZDA001N-ACCESS} program project ''STARE: SpatioTemporal Adaptive-Resolution Encoding to Unify Diverse Earth Science Data for Integrative Analysis''\footnote{Proposal Number: '17-ACCESS17-0039'}. Experiments will be carried out on an apt region of interest (e.g. Tuolumne Basin, Merced Basin, or San Joaquin in the eastern Sierra Nevada or and/or a Himachal Pradesh in India). 
+
+
 
 
 \newpage
@@ -222,30 +233,30 @@ In the following, I intend to explore three questions about data citations:
 The 4th paradigm arises from an environment in which large amounts of data are collected 24/7 and made publicly accessible. Research is not anymore just driven by empirical, theoretical and computational approaches, but also by the exploration of vast amounts of data collected from instruments and simulations. In this context, data collection and assembly itself is a significant research activity \citep{Frew2012}.
 %We are just at the beginning of the era of the 4th paradigm and therefore a lot of challenges are still to be solved. One grave uncertainty is how we can maintain long-term data provenance and enable reproducibility throughout the end of time \citep{Hey2009}. 
 
-A crucial step into the 4th paradigm is to acknowledge data as first class research products. As such, they have to be persistently available, documented, citable, reusable, and possibly peer-reviewed \citep{Callaghan2012, Kratz2014}. The research community has to move from data sharing to data publishing \citep{Costello2009, Kratz2014} or, in other words, has to make data \gls{FAIR} \citep{Wilkinson2016}. 
+A crucial step into the 4th paradigm is to acknowledge data as first class research products. As such, they have to be persistently available, documented, citable, reusable, and possibly peer-reviewed \citep{Callaghan2012, Kratz2014}. Consequently, the research community has to move from data sharing to data publishing \citep{Costello2009, Kratz2014} or, in other words, has to make data \gls{FAIR} \citep{Wilkinson2016}. 
 
-Data citation are one of the required building blocks to achieve this goal and a commonly adaption of data citations and a uniform data access is expected to benefit the progress of science \citep{CODATA2013}. However, there does not seem to be a consensus on what data publication means \citep{Kratz2014} and how data citation mechanisms, which would sufficiently motivate throughout data publishing, are to be implemented \citep{Costello2009}.
+Data citation are one of the required building blocks to achieve this goal and a common adaption of data citations and a uniform data access is expected to benefit the progress of science \citep{CODATA2013}. However, there does not seem to be a consensus on what data publication means \citep{Kratz2014} and how data citation mechanisms, which would sufficiently motivate throughout data publishing, are to be implemented \citep{Costello2009}.
 
-The lack of data citation standards was already criticized more than a decade ago by \cite{AltKin07}. The authors proposed a set of standards to address the issues. However, years later, \cite{Altman2015, Tenopir2011} find that even though required by publishers, researchers still too often do not make data publicly available, nor cite the data consequently. The reasons for this are both cultural and technical: 
+The lack of data citation standards was already criticized more than a decade ago by \cite{AltKin07}. The authors proposed a set of standards to address the issues. However, years later, \cite{Altman2015} as well as \cite{Tenopir2011} find that even though required by publishers, researchers still too often do not make data publicly available, nor cite the data consequently. The reasons for this are both cultural and technical: 
 
-\cite{Lawrence2011} find that traditionally only conclusions are judged. Only little attention is given to the fitness of the used data for re-interpretation. This in turn results in low appreciation for data production and publishing. \cite{Tenopir2011} additionally point out that organizations do not sufficiently provide support for data management to their researchers. Even more so, the authors stress out that researchers may actually be motivated to purposefully withhold data in order to retain their own ability to publish findings.
+\cite{Lawrence2011} find that traditionally only conclusions are judged. Only little attention is given to the fitness of the used data for re-interpretation. This in turn results in low appreciation for data production and publishing. \cite{Tenopir2011} additionally point out that organizations do not sufficiently provide support for data management to their researchers. Even more so, \cite{Tenopir2011} stress out that researchers may actually be motivated to purposefully withhold data in order to retain their own ability to publish findings.
 
 On the technical side, robustness, openness, and uniformity in data publication are lacking \citep{Starr2015, Koltay2016}. Cost, not so much for the storage, but for curation efforts is another reason preventing data publication \citep{Gray2002}.
 \citep{Tenopir2011} states that a major reason for data withholding is the effort required to publish data. 
-The ability to receive credit for cited data may increase the motivation for researchers to publish their data \citep{Crosas2011, AltKin07}. However, there is no common agreement on the implementation of data citations, especially if subsets are to be cited or data is dynamic \citep{Kratz2014, Assante2016}. \citep{Belter2014} finds that even when used, data citation practices are inconsistent. \citep{Assante2016} illustrates the range of practices which span from exporting a formatted citation string or a generic format such as RIS or BibTex, to embedded links to the dataset, or sharing to social media. 
+The ability to receive credit for cited data may increase the motivation for researchers to publish their data \citep{Crosas2011, AltKin07}. However, there is no common agreement on the implementation of data citations, especially if subsets are to be cited or data is dynamic \citep{Kratz2014, Assante2016}. \cite{Belter2014} finds that even when used, data citation practices are inconsistent. \cite{Assante2016} illustrates the range of practices which span from exporting a formatted citation string or a generic format such as RIS or BibTex, to embedded links to the dataset, or sharing to social media. 
 
-\citep{Silvello2017} provides an exhaustive review of the current state of data citations in terms of reasons for the necessity of data citations and on current examples of data citation implementations. Based on a meta-study, the author identified 6 main motivations for data citations: Attribution, Connection, Discovery, Sharing, Impact, Reproducability. 
-Arguably, these motivations can be boiled down to Identity, Credit, and Access. 
+\cite{Silvello2017} provides an exhaustive review of the current state of data citations in terms of reasons for the necessity of data citations and on current examples of data citation implementations. Based on a meta-study, the author identified 6 main motivations for data citations: Attribution, Connection, Discovery, Sharing, Impact, Reproducability. 
+Arguably, these motivations can be condensed to Identity, Credit, and Access: 
 
 \paragraph{Identity:} 
-Citations provide an identity to data, enabling to refer to and reason about data \citep{Bandrowski2016}, even if the data does no longer exist or is behind not open access.
-
+Citations provide an identity to data, enabling to refer to and reason about data \citep{Bandrowski2016}, even if the data does no longer exist or is behind paywalls. 
 \paragraph{Credit:}
-Citations provide a way to give credit to the authors. This allows to attribute how the data was used over time, how relevant, and how impactful it is \citep{Honor2016}. The possibility to receive credit consequently provides an incentive for sharing \citep{Niemeyer2016, Callaghan2012, Kratz2014}. Initiatives such as ``Making Data Count''\citep{Kratz2015} recognize this and supply the community with principles and implementations to obtain data usage metrics.
+Citations provide a way to give credit to the authors. 
+In combination with the identity, which allows to evaluate how the data was used over time, how relevant, and how impactful it is \citep{Honor2016}, the possibility to receive credit consequently provides an incentive for sharing \citep{Niemeyer2016, Callaghan2012, Kratz2014}. Initiatives such as ``Making Data Count''\citep{Kratz2015} recognize this and supply the community with principles and implementations to obtain data usage metrics.
 
 \paragraph{Access:} 
 A citation provides information on how to retrieve the cited material (e.g. the journal, year and pages). Persistent access to data is crucial since it is the foundation of reusability and reproducability \citep{Starr2015}.
-%Data citations may provide an additional side-effect improving data accessibility: There is evidence suggesting that well curated data will be cited favorably \citep{Belter2014}. Citations therefore may be a motivating driver for researchers to sustainably curate their data and thus making them more accessible.
+Data citations may provide an additional side-effect improving data accessibility: There is evidence suggesting that well curated data will be cited favorably \citep{Belter2014}. Citations therefore may be a motivating driver for researchers to sustainably curate their data and thus making them more accessible.
 
 
 \subsubsection{What is a data citation?}
@@ -259,7 +270,7 @@ Data citation establish a link between published research results and data \cite
 
 Unique identities of data allow to reference and connect related work and therefore enhance discoverability. Further, they enable to evaluate the relevance and impact of the dataset. The information about the creator allows the author to claim attribution of the impact, which in turn provides incentive for the author to share the dataset. The information about how to access the data facilitates the sharing and allows reproducability.
 
-Arguably, data citations may include a fingerprint\footnote{i.e. a hash. \citep{Crosas2011} refers to them as \gls{UNF}} to enable data integrity verification \citep{Crosas2011} and that a given dataset equals the referenced data.
+Arguably, data citations should also include a fingerprint\footnote{i.e. a hash. \citep{Crosas2011} refers to them as \gls{UNF}} to enable data integrity verification \citep{Crosas2011} and that a given dataset equals the referenced data.
 
 Data citations further should be machine-actionable \citep{Assante2016, Altman2015, Buneman2016}, both in terms of creation and resolving and in terms of identification.
 They have to accommodate the structured nature of data, the fact that data may change over time and that users may need to refer to subsets of data \citep{Buneman2010}.
@@ -276,7 +287,7 @@ I want to distinguish the differences in data citation implementations in five d
  \item How are datasets and their subsets identified? 
  \item How is fixity is assured? 
  \item How are revisable datasets handled? 
- \item How does the citation facilitate access to the data? 
+ \item How do citations facilitate access to data? 
  \item How are human readable citation snippets/strings generated.
 \end{enumerate}
 
@@ -372,19 +383,22 @@ Data citation system should make use of metadata standards \citep{CODATA2013} an
 
 The requirement of the metadata to construct human readable strings vary between implementations but a common intersection can be found:
 
-\begin{tabularx}{\columnwidth}{lll lll ll}
-\toprule
-                                                          & PID   & Creator & Title & Subj.   & Vers.   & Descr.    & UNF \\ \midrule
-DataCite\footnote{\url{https://schema.datacite.org/}}     & DOI   & Yes     & Yes   & Yes     & Yes     & Yes       & No  \\
-Dublin Core\footnote{\url{https://schema.datacite.org/}}  & Yes   & Yes     & Yes   & Yes     & Yes     & Yes       & No  \\ 
-Mendeley\footnote{\url{https://data.mendeley.com/}}       & DOI   & Yes     & Yes   & No      & Yes     & Yes       & No  \\
-Figshare\footnote{\url{https://figshare.com/}}            & DOI   & Yes     & Yes   & Yes     & Yes     & Yes       & No  \\
-Dryad                                                     & DOI   & Yes     & Yes   & Yes     & Yes     & No        & No  \\
-Dataverse                                                 & DOI   & Yes     & Yes   & No      & Yes     & No        & Yes \\
-Zenodo\footnote{\url{https://zenodo.org/}}                & DOI   & Yes     & Yes   & No      & Yes     & No        & No  \\
-WGDC\footnote{\citep{Rauber2015}}                         & Yes   & Yes     & Yes   & No      & Yes     & No        & No  \\
-\bottomrule
-\end{tabularx}
+\begin{table}
+    \caption{Comparison of Data Citation Standards. DataCite: \url{https://schema.datacite.org}; Dublin Core \url{https://schema.datacite.org}; Mendeley \url{https://data.mendeley.com}; Figshare \url{https://figshare.com/}; Zenodo \url{https://zenodo.org}; WGDC \citep{Rauber2015}} 
+    \begin{tabularx}{\columnwidth}{lll lll ll}
+        \toprule
+                                & PID   & Creator & Title & Subj.   & Vers.   & Descr.    & UNF \\ \midrule
+        DataCite                & DOI   & Yes     & Yes   & Yes     & Yes     & Yes       & No  \\
+        Dublin Core             & Yes   & Yes     & Yes   & Yes     & Yes     & Yes       & No  \\ 
+        Mendeley                & DOI   & Yes     & Yes   & No      & Yes     & Yes       & No  \\
+        Figshare                & DOI   & Yes     & Yes   & Yes     & Yes     & Yes       & No  \\
+        Dryad                   & DOI   & Yes     & Yes   & Yes     & Yes     & No        & No  \\
+        Dataverse               & DOI   & Yes     & Yes   & No      & Yes     & No        & Yes \\
+        Zenodo                  & DOI   & Yes     & Yes   & No      & Yes     & No        & No  \\
+        WGDC                    & Yes   & Yes     & Yes   & No      & Yes     & No        & No  \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
 
 
 Additional fields: 
@@ -438,14 +452,16 @@ Following a list of the most notable ones:
 
 \newpage
 \subsection{Global indexing schemes}
+%\item How does a system that leverages \gls{STARE} within SciDB compare to google earth engine and the \gls{DGGS} \citep{OpenGeospatialConsortium2017}?
+
+
 \label{lit_index}
-Queries are often concerned only with a portion of the whole stored data volume.
-Appropriate indexing schemes minimize the data that has to be scanned \citep{Kunszt2000}.
+Queries are often concerned only with a portion of the whole stored data volume and appropriate indexing schemes minimize the data that has to be scanned \citep{Kunszt2000}.
 
 The idea of using hierarchical data structures to represent or index geospatial data has been discussed for decades \citep{Dutton1996, Samet1988}.
 Hierarchical data structures are based on recursive decomposition of an initial planar or solid and can, for example, be implemented as quadtrees \citep{Samet1988}.
 
-The initial applications of quadtrees in the geospatial domain have mainly focused on representation of two-dimensional data in terms of visualization and image processing and were typically based on the tessellation of squares \citep{Lugo1995}.
+The initial applications of quadtrees in the geospatial domain have mainly focused on the representation of two-dimensional data in terms of visualization and image processing and were typically based on the tessellation of squares \citep{Lugo1995}.
 
 An early example of the use of quadtrees to represent the globe three-dimensionally is \cite{Dutton1984}, who proposed the establishment of a Geodesic Elevation Model in which locations of elevation measurements are encoded/indexed in a quadtree. 
 \cite{Dutton1989} suggests the use of this quadtree for general indexing of planetary data.
@@ -471,7 +487,7 @@ The name of a new node (triangle) is the concatenation of the name of the parent
 \cite{Rilee2016} advanced the HTM implementation from right-justified mapping to left-justified mapping:
 In a right justified mapping, trixels that are in proximity but at different levels are mapped to separate locations on the number line\footnote{trixel \textbf{S0123} has binary HTM code 1000011011 and thus HTM id 539, while trixel S01230 has the binary HTM code of 100001101100 and thus HTM id 2156. The ids are far from each other while the both trixels share the same first 4 digits in their name prefix (and thus are contained in each other)}.
 Left justified mapping respects geometric containment by right-padding HTM binary codes with zeros.
-The level (which in right-justified mapping is implicitly given) is specified by the last 5 bits of the 64 bit integer.
+The level (which in right-justified mapping is implicitly given) is specified by the last 5 bits of the 64 bit integer. Therefore, regardless of the resolution, indexes that are co-located are in similar index ranges.
 \cite{Kuo2017} extend the implementation with a temporal component and name the resulting universal geoscience data representation \gls{STARE}.
 \cite{Rilee2018} propose the integration of \gls{STARE} with \gls{OPeNDAP} and to implement cloud-based science use-cases with \gls{STARE}-enabled data access.
 
@@ -479,28 +495,49 @@ The level (which in right-justified mapping is implicitly given) is specified by
 
 \subsection{Use Case (Multi-sensor snow mapping)}
 
-\subsubsection{Motivation}
-Significant portions of earth's population rely on water originating from snow-melt \citep{Barnett2005}.
-Understanding and predicting snowmelt processes therefore is crucial to manage water resources, especially considering the anticipated drastic changes in snowmelt caused by globally changing climatic conditions. Modelling the physical snowmelt requires knowledge about the spatial extent of snowcover as well as its albedo.
+    
+\subsubsection{Motivation for remote sensing of snow}
+Considering its high reflectance and large land cover, snow is an important forcing on Earth's radiation balance and hence the climate \citep{Durand2017}.
+Further, significant portions of earth's population rely on water originating from snow-melt \citep{Barnett2005, Durand2017} and the snowpack itself buffers the runoff \citep{Lettenmaier2015}.
+Understanding snowmelt processes therefore is crucial to manage water resources, especially considering the anticipated drastic changes in snowmelt caused by globally changing climatic conditions. 
 
-% Floods, vegitation/ecology, feedbacks to the climate, water ressuources, hydropower
-% Snowpillows, manual snowcourses, metrological surveys are traditional ways. Remote sensing provides temporal and spatial continuous methods
+In order to estimate and predict the spatial and temporal extent of snow cover, the snow's energy- and massbalance are simulated. Besides meteorological conditions, spatially resolved data on the snowpack in terms of extent/cover, depth, presence of water, temperature, \gls{SWE}, and albedo are herefore required \citep{Dozier2004}.
 
 
-\subsubsection{History of snow remote mapping}
-\cite{Kharlamova2015, Hall2001} introduced level-3 snow products for \gls{MODIS} at 500 m resolution (MOD10A1, \cite{Hall2016}). In its original form, the algorithm was based on \gls{NDSI} and heuristics for declaring pixels as snow covered. The algorithm produces binary pixel maps (``SNOWMAP'') of snow cover.
+\subsubsection{Remotely sensed snow cover}
+Measuring of snow can be subdivided into the identification of the existence/extent of snow, and the measurements of its properties such as depth, density, water content, albedo, and temperature profile. The former three properties can be collapsed into in the \gls{SWE}, while the latter two are necessary to model the forcings on the snowpack.
+
+Traditional ways of measuring the snowpack are snowpillows, snowcourses, and metrological surveys. These type of measurements are sparse and infrequent and further subject to inhomogenous conditions. In contrary, remote sensing can provide temporal and spatial continuous data \citep{Dozier2004, Nolin2010}.
+
+For hydrology, \gls{SWE}, is an essential snowpack parameter. However, the snow community lacks an approach for routinely mapping its global distribution \citep{Lettenmaier2015} on a sufficient space-time resolution. The SnowEX \citep{Durand2017} project therefore is seeking to help define a mission proposal. 
+
+Measuring the global extent of snow on the other side is currently generally possible, with challenges arising from a) cloud cover, b) vegetation c) complex terrain. Snow extent can globally and routinely calculated either from a combination of the visible and \gls{SWIR} surface reflectance data, or from (passive and active) microwave \citep{Frei2012} data. Global active microwave data is available from \gls{QuickSCAT}, however only for the time period between 1999 and 2009. Global passive microwave data is continuously available since the 1970s. However, due to the low signal, passive microwave data is only available at coarse resolution.
+
+Specifically for mountainous regions, characterized by high topographic heterogeneity, spatial resolutions need to be fine enough to sufficiently capture the temporal and spatial variability of the snowpack. \cite{Lettenmaier2015} suggests spatial resolutions of snow extent not coarser than $\approx \SI{100}{\meter}$ and temporal resolution of not more than one week. Hence, passive microwave data is not suitable for snow extent measurements in mountainous areas. The required resolutions also exceed the spatial and/or temporal resolution of visible and \gls{SWIR} reflectance data of spaceborn remote sensing instrument. It therefore is necessary to map snow cover at sub-pixel accuracy \citep{Dozier2004}.
+
+Several different algorithms to binarily classify pixels into 'snow' or 'non-snow' as well as algorithms to estimate fractional snow cover from visible and \gls{SWIR} reflectance data exist \citep{Nolin2010}.
+
+Further, algorithms to estimate the snow's albedo via measurements of snow grain size and contamination by dust or soot have been developed \citep{Nolin2010, Dozier2004}. These algorithms are based on the spectral signature of a pixel without the consideration of the pixel's neighbors. The algorithms may or may not contain filtering based on e.g. surface temperatures, and vegetation and cloud masks.
+
+\paragraph{\gls{NDSI}:}
+Both snow and clouds are highly reflective in the visible part of the spectrum. However, in contrary to clouds, snow is highly absorptive in the \gls{SWIR} part of the spectrum, allowing to distinguish snow from clouds by using the ratio of visible and \gls{SWIR} \citep{Hall2011}. This became firstly feasible with the launch of the Landsat \gls{TM}, which included sensors for shortwave infrared \citep{Lettenmaier2015}. \cite{Dozier1989} introduced the use of normalized differences of \gls{SWIR} (later termed \gls{NDSI} by \cite{Hall1995}). Combined with threshold values of this difference, Landsat TM pixels can be categorized into snow covered and snow free.
+
+A challange in mapping snow-covered area is forest cover obscuring the snow beneath the canopy contributing to the pixel reflectance. \cite{Klein1998} therefore introduced a combination of \gls{NDVI} and \gls{NDSI} to reduce the error in snow cover detection in dense vegetation \cite{Nolin2010}.
+ 
+The approach was adapted by \cite{Hall2002, Hall2001} to introduce level-3 snow products for \gls{MODIS} at \SI{500}{\meter} resolution (MOD10A1, \citep{Hall2016}). The approach includes heuristics based on \gls{NDSI} to improve quality in forested regions and on thermal masks to identify ``spurious snow'' (a pixel is not determined to be snow if its temperature is greater \SI{277}{\kelvin}). The algorithm produces binary pixel maps (``SNOWMAP'') of snow cover.
+
 
 \begin{equation}
  NDSI6 = \frac{band \, 4 -band \, 6}{band \, 4 + band \, 6}
 \end{equation}
 
-\cite{Salomonson2006, Salomonson2004} added a fractional snow cover product staring from version 005 of MOD10A1. The new algorithm also accompanies for the fact that detectors of band 6 on \gls{MODIS} aqua are nonfunctional, requiring the definition of a new \gls{NDSI}:
+\cite{Salomonson2006, Salomonson2004} added a fractional snow cover product staring from version 005 of MOD10A1. The new algorithm also addresses the fact that detectors of band 6 on \gls{MODIS} aqua are nonfunctional, requiring the definition of a new \gls{NDSI}:
 
 \begin{equation}
  NDSI7 = \frac{band \, 4 -band \, 7}{band \, 4 + band \, 7}
 \end{equation}
 
-Fractional snow covers are calculated by assuming a linear relationship between the NDSI and the snow cover. The model is fitted with data from Landsat ETM and resulted in the following relationships:
+Fractional snow covers are calculated by assuming a linear relationship between the \gls{NDSI} and the snow cover. The model is fitted with data from Landsat \gls{ETM} and resulted in the following relationships:
 
 \begin{equation}
     FRA6T = -0.01 + 1.45 * NDIS6
@@ -510,44 +547,37 @@ Fractional snow covers are calculated by assuming a linear relationship between 
     FRA7T = -0.64 + 1.91 * NDIS7
 \end{equation}
 
-The authors point out that improved snow cover estimates could be achieved by accounting for the (snow free) land cover of each pixel. Additionally, the authors expect improved precision through spectral endmember approach. 
+\paragraph{Spectral Unmixing:}
+The \gls{NDSI} approach generally struggles to provide accurate results in the transitional periods during accumulation and melt. In contrast, methods based on spectral unmixing provide more consistent throughout the seasons and maintains its accuracy throughout a large range of surface properties \citep{Rittger2013}.
 
-Spectral unmixing allows to determine constituent materials and their proportions contributing to the spectrum of a pixel. Hence, spectral unmixing provides a method to retrieve sub-pixel detail \citep{Keshava2003}. 
+Spectral mixing is the assumption that measured radiances are a combination of the radiances reflected by different constituent surfaces \citep{Dozier2004}.
+In remote sensing, this results from the fact that pixels of remote sensing sensors are often too large to represent a pure constituent material and rather represent a mixture of a number of constituents materials. Spectral unmixing is an approach in which the spectrum of a mixed pixel is decomposed into the spectra of the constituent materials in order to determine the proportionate contribution of each constituent material to the mixed pixel. Hence, spectral unmixing provides a method to retrieve sub-pixel detail \citep{Keshava2003}.
 
-Spectral mixing results from the fact that pixels of remote sensing sensors are often too large to represent a pure constituent material and rather represent a mixture of a number of constituents materials. Spectral unmixing is an approach in which the spectrum of a mixed pixel is decomposed into the spectra of the constituent materials in order to determine the proportionate contribution of each constituent material to the mixed pixel \citep{Keshava2003}.
-
-Spectral unmixing approaches are based on the inversion of mixing models, representing the physics of hyper-spectral mixing. Mixing models may either be linear or nonlinear. Linear mixing models can be employed if the reflectance area is contiguously divided so that the incident radiation is reflected only once. Homogeneously mixed reflectance areas may cause incident radiation to be reflected by multiple substances at once. The mixing therefore has to be modeled nonlinear \citep{Keshava2003}.
+Spectral unmixing approaches are based on the inversion of mixing models, representing the physics of hyper-spectral mixing. Mixing models may either be linear or nonlinear. Linear mixing models can be employed if the reflectance area is contiguously divided so that the incident radiation is reflected only once. Homogeneously mixed reflectance areas may cause incident radiation to be reflected by multiple substances at once. The mixing therefore has to be modeled nonlinearly \citep{Keshava2003}.
 In order to solve for the fractional surface types, the error of the endmember combination is minimized.
 
-In the context of snow, the assumption of linear mixing is valid as long as only minimal interactions between different surfaces can be assumed, such as on planar areas and/or snow cover above the tree line \citep{Painter2009}. If multiple scatterings are apparent (e.g. reflections from vegetation to snow), the mixing has to be modelled nonlinear.
+In the context of snow, the assumption of linear mixing is valid as long as only minimal interactions between different surfaces can be assumed, such as on planar areas and/or snow cover above the tree line \citep{Painter2009, Dozier2004}. If multiple scatterings are apparent (e.g. reflections from vegetation to snow), the mixing has to be modelled nonlinearly \citep{Roberts1993}.
 
 \cite{Vikhamar2003} present an approach for fractional snow cover identification (SnowFrac) based on constrained linear spectral unmixing. The algorithm particularly tackles the challenge of identifying fractional snow cover in tree covered areas. It uses land-cover data to a-priori determine the non-snow endmember observable in a scene.
 
-\citep{Painter2003} describes \gls{MEMSCAG}, a method derived from \gls{MESMA} \citep{Roberts1998}, to obtain the subpixel snowcover, grainsize and albedo for \gls{AVIRIS} pixels. The underlying method is linear spectral unmixing. Simultaneously, snow grain size and the fractional snow cover is estimated. Endmembers of pure surface covers for varying grain sizes were modeled with Mie theory. Additionally, 60 endmembers for rock, soil, vegetation, and ice are used.
+\cite{Painter2003} describe \gls{MEMSCAG}, a method derived from \gls{MESMA} \citep{Roberts1998}, to obtain the subpixel snowcover, grainsize and albedo for \gls{AVIRIS} pixels. The underlying method is linear spectral unmixing. Simultaneously, snow grain size and the fractional snow cover is estimated. Endmembers of pure snow for varying grain sizes were modeled with Mie theory. Additionally, 60 endmembers for rock, soil, vegetation, and ice are used.
 
-\Cite{Painter2009} describes \gls{MODSCAG}, an extension of \gls{MEMSCAG} to enable subpixel snowcover, grainsize and albedo estimations for \gls{MODIS} pixels. \gls{MODSCAG} uses the shape of the spectras rather than absolute reflectances, which makes it suitable to estimate snow parameters for rough mountainous regions in which terrain and hence illumination angles are not precisely determinable. \gls{MODSCAG} accounts for nonlinear mixture, however avoids nonlinear solving through the use of pre-calculated canopy-level endmembers that are linearly combined.
+\Cite{Painter2009} describes \gls{MODSCAG}, an progression of \gls{MEMSCAG}, to enable subpixel snowcover, grainsize and albedo estimations for \gls{MODIS} pixels. \gls{MODSCAG} uses the shape of the spectras rather than absolute reflectances, which makes it suitable to estimate snow parameters for rough mountainous regions in which terrain and hence illumination angles are not precisely determinable. \gls{MODSCAG} accounts for nonlinear mixture, however avoids nonlinear solving through the use of pre-calculated canopy-level endmembers that are linearly combined.
 
 A general challenge in working with \gls{MODIS} pixels that \gls{MODSCAG} is facing is the wide viewing angles of \gls{MODIS} \citep{Dozier2009, Dozier2008, Liu2008}, resulting in the following problems:
 \begin{itemize}
  \item Pixels far off NADIR cover more than 10 times the area of pixels close to NADIR, causing them to overlap and therefore blur the image.
  \item Considering that the topography and vegetation is not taken into account, the viewing zenith angle/geometry is unknown. However, e.g. trees will block the view to the ground increasingly with increasing viewing angles.
-To overcome these and other issues, \cite{Dozier2008} developed a space-time interpolation to recover the day's best estimates by avoiding measurements far from NADIR.
 \end{itemize}
 
+To overcome these and other issues, \cite{Dozier2008} developed a space-time interpolation to recover the day's best estimates by avoiding measurements far from NADIR.
 
-
-
-
-%\cite{Dozier1981} presents a method to measure surface radiant temperatures at sub-pixel
-%resolution. It exemplifies a method for TIROS-N satellites.
-%The fundamental principle is that a sub-pixel area with higher temperature will contribute
-%proportinally more to the signal in the shorter wavelengths.
-%The method assumes that only two temperature fields exist within the pixel.
+%\subsubsection{Remote sensing of snow temperature}
+%\cite{Dozier1981} presents a method to measure surface radiant temperatures at sub-pixel resolution. It exemplifies a method for TIROS-N satellites. The fundamental principle is that a sub-pixel area with higher temperature will contribute proportinally more to the signal in the shorter wavelengths. The method assumes that only two temperature fields exist within the pixel.
 
 
 
 %\cite{Lundquist2018} presents a method to separate snow from forest temperatures and to determine fractional snow cover from MODIS data.
-
 
 
 
@@ -606,13 +636,13 @@ To overcome these and other issues, \cite{Dozier2008} developed a space-time int
 \printbibliography[keyword={snow},title={Remote sensing of Snow}]
 
 \newpage
-\printbibliography[keyword={environmental informatics},title={Environmental Informatics}]
-
-\newpage
 \printbibliography[keyword={global index},title={Global Indexing}]
 
 \newpage
 \printbibliography[keyword={data citation},title={Data Citation}]
+
+\newpage
+\printbibliography[keyword={environmental informatics},title={Environmental Informatics}]
 
 \newpage
 \printbibliography[keyword={database},title={Database Systems}]
