@@ -53,19 +53,19 @@
 
 Environmental informatics is the application of information technology to environmental sciences \citep{Frew2012}.
 As such, it addresses the information infrastructure that environmental scientists leverage
-to obtain knowledge form environmental data.
+to obtain knowledge from environmental data.
 
 The appearance of cloud computing, characterized by scalability on one side, 
 and by abstraction and stereotyping of interactions through services and \glspl{API} on the other side \citep{Foster2017}, 
 provides for opportunities in environmental informatics. 
-At the same time, it opens up questions about what the workflow of an environmental scientists of the 21st century should look like to fully exploit these opportunities.
+It opens up questions about what the workflow of an environmental scientists in the 21st century should look like to fully exploit these opportunities.
 
 My thesis is that the inherent heterogeneity of the flow from data to knowledge in the environmental sciences causes bottlenecks that can be unblocked through infrastructures leveraging cloud computing. 
 In my dissertation, I want to address the ``twilight of file-centricity''\footnote{German: Dateidämmerung \textipa{[\textsubring{d}a'ta\textsubcircum{i}'dEm@\;RUN]}} and technologies required to transition from file-centricity to data-centricity.
 
 Files package (i.e. chunk or aggregate) data into logical units and provide an intelligible identity to their content: Their filename\footnote{Using the conventions of \gls{MODIS} filename as data identity was e.g. exploited by MODster \citep{Frew2005, Frew2002} to managed distributed data}.
-Files further conceal the structure of data, which allows repositories to preserve and distribute data structure-agnostically. 
-While this generalizes and simplifies the task for the repositories, it pushes the responsibility of acknowledging the data's structure to the users, who have to \gls{ETL} data from files prior to extracting knowledge \citep{Rilee2016, Szalay2009}.
+Files further conceal the structure of data they are holding, which allows repositories to preserve and distribute data structure-agnostically. 
+While this generalizes and simplifies the task for the repositories, it pushes the responsibility of acknowledging the data's structure to the users, who have to \gls{ETL} data prior to extracting knowledge \citep{Rilee2016, Szalay2009}.
 
 The tragedy in this approach materializes in two bottlenecks: Data movement and data alignment.
 
@@ -85,7 +85,7 @@ Data alignment is to be understood as providing a common method to express (e.g.
 It can be achieved through (re-)projection, aggregation and gridding, or indexing.
 Because methods for alignment are not provided from a central point (i.e. the repository), every user has to manually align data, resulting in redundant effort.
 
-In order to break the stated bottlenecks, the file-centric approach has to be replaced through a system that:
+In order to break the stated bottlenecks, the file-centric approach has to be replaced by a system that:
 \begin{itemize}
     \item Is capable of providing identity to data independently of packaging.
     \item Does not require manual data alignment.
@@ -98,12 +98,12 @@ In order to break the stated bottlenecks, the file-centric approach has to be re
 \section{Work Plan}
 I want to address the following challenges to spur the twilight of file-centricity.
 
-\paragraph{Provision of Data Identity and Citations:}
+\paragraph{Data Identity and Data Citations:}
 By abandoning files as the package of data, a natural identity of data is lost. Identity, however, is needed to refer to, and reason about data. Regardless of previous subsetting and processing, data needs to be identifiable and citable. In my dissertation, I want to develop services providing identity and simplifying the creation of citations to data stored in, and served through online repositories.
 
 \paragraph{Data co-location and co-alignment:}
 To avoid movement, data has to be readily co-located at the place of computation. To further make \gls{ETL} processes unnecessary, the co-located, and potentially heterogeneous data also has to be co-aligned. I.e. a common concept to address spatiotemporal coincidence needs to be established throughout all the data. In practice, this means storing data in a database providing indexes, contexts, and schemas. 
-In my dissertation, I want to develop a scalable \gls{GIS} system that leverages global indexes and array databases to enable \gls{ETL}-free workflow.
+In my dissertation, I want to develop a scalable \gls{GIS} that leverages global indexes and array databases to enable \gls{ETL}-free workflow.
 
 \paragraph{Use Case (Multi-sensor snow mapping):}
 One of the five laws postulated by Jim Gray is that a database designed for a given discipline has to be capable to answer the 20 key questions a scientists may have \citep{Hey2009, Szalay2009}.
@@ -111,7 +111,7 @@ Following this spirit, I want to verify the aptness of the previously proposed s
 
 \newpage
 
-\subsection{Provision of data Identity and Citations}
+\subsection{Data Identity and Data Citations}
 Citations help to make data \acrfull{FAIR} \citep{Wilkinson2016}. In more abstract terms, data citations provide identity to data, which allows referencing and de-referencing.
 
 Provision of identity is a key challenge in the twilight of file-centric workflows, since a natural addressable identity of data is lost as soon as files as a package of data are abandoned.
@@ -123,11 +123,11 @@ Technologies such as \gls{WMS}, \gls{WCS}, and the \gls{OPeNDAP} \citep{Gallaghe
 
 With the development of the web-service \gls{OCCUR}\footnote{\url{https://github.com/NiklasPhabian/OCCUR}, \url{http://occur.duckdns.org}}, I am exploring an approach for identity assignment and citation generation to data:
 \Gls{OCCUR} is a webservice that allows users to assign and store identities to data retrieved from an \gls{OPeNDAP} query. 
-OCCUR creates identifiers for identities which can later be resolved through \gls{OCCUR}, whereby \gls{OCCUR} will verify that the data has not changed since the creation of the identity. OCCUR brokers identities by ensuring that identical data is sharing the same identity.
+OCCUR creates identifiers for identities which can later be resolved through \gls{OCCUR}, whereby \gls{OCCUR} will verify that the data has not changed since the assignment of the identity. OCCUR further brokers identities by ensuring that identical data is sharing the same identity.
 
 \gls{OCCUR} additionally allows users to generate formatted citation snippets for both OCCUR identities and for any \gls{OPeNDAP} query. It is the \gls{OPeNDAP} pendant to \url{www.crosscite.org}, which allows the creation of citation snippets from \glspl{DOI}. 
 
-The development of \gls{OCCUR} is supported by the \gls{ESIP} federation as a 2018 \gls{ESIP} lab project. The work on \gls{OCCUR} has been presented at the 2017 Bren PhD Symposium and the 2018 \gls{ESIP} summer meeting.
+The development of \gls{OCCUR} was supported by the \gls{ESIP} federation as a 2018 \gls{ESIP} lab project. The work on \gls{OCCUR} has been presented at the 2017 Bren PhD Symposium and the 2018 \gls{ESIP} summer meeting.
 
 I envisage a submission of a publication on the findings of the development of OCCUR in 2019 to the CODATA Data Science Journal.
 % 
@@ -140,13 +140,13 @@ Co-alignment means that a common concept to address coincidence throughout all d
 It can be achieved through a common indexing schema. A side-effect of co-alignment is that it can be exploited to improve physical data placement: The index can be used to store coinciding data in physical proximity. This will, for a lot of use-case, allow to process data (embarrassingly) parallel in a shared-nothing architecture \citep{Kuo2017}.
 The prevelant dimensions for which data has to be aligned in environmental science are hereby time and space.
  
-The \gls{STARE}\footnote{STARE is a global indexing schema that is built upon the quadtree \gls{HTM}. A review of quadtrees in geospatial indexing is provided in section \ref{lit_index}.} \citep{Kuo2017} provides a common concept to address spatiotemporal coincidence for environmental data, and SciDB\footnote{\url{https://www.paradigm4.com/}} is a candidate database capable of handling large volumes of multidimensional data.
+The \gls{STARE}\footnote{STARE is a global indexing schema that is built upon the quadtree \gls{HTM}. A review of quadtrees in geospatial indexing is provided in section \ref{lit_index}.} \citep{Kuo2017} provides a common concept to address spatiotemporal coincidence for environmental data.
 
 I started the development of EarthDB 2.0, a database based \gls{GIS} capable of handling diverse data. 
-EarthDB 2.0 is implemented in SciDB and therefore anticipated to scale vertically and horizontally.
+EarthDB 2.0 is implemented in SciDB\footnote{\url{https://www.paradigm4.com/}} and therefore anticipated to scale vertically and horizontally.
 At first glance, EarthDB 2.0 tries to achieve similar functinality as Google Earth Engine \citep{Gorelick2017}: Both are scalable \gls{GIS} systems that shield user from \gls{ETL} and \gls{HPC}. However while Earth Engine is a tile database and thus bound to gridded data, EarthDB 2.0 utilizes \gls{STARE} to index individual pixels and therefore does not require data to be located in a regular grid. 
 
-I have presented the findings of an early stage of EarthDB 2.0 during an oral presentation at the 2017 \gls{AGU} Fall meeting. I want to continue the development of EarthDB to create a system capable of solving common problems in environmental science. In particular, this includes developing of the following:
+I have presented the findings of an early stage of EarthDB 2.0 during an oral presentation at the 2017 \gls{AGU} Fall meeting. I want to continue the development of EarthDB 2.0 to create a system capable of solving common problems in environmental science. In particular, this includes developing of the following:
 
 \paragraph{Schema recommendations}
 I want to identify apt SciDB array schemas to hold heterogeneous, but STARE-indexed remote-sensing data products as well as other commonly used geometry information and metdata.
@@ -156,7 +156,7 @@ I want to identify apt SciDB array schemas to hold heterogeneous, but STARE-inde
 
 \paragraph{Data Loading}
 Loading data to SciDB is considered its Achilles' Heel. Countless attempts for loading remote sensing data to SciDB have been carried out\footnote{scidb4gdal, modbase, scidb-hdf5, sls, modis2scidb, and arraybridge to name a few}. 
-I will continue the development of a graceful method to import and STARE-index commonly used remote sensing products into SciDB. A speedup potential hereby exist with SciDB's accelerated-io plugin which allows data sharding prior to loading. 
+I will continue the development of a graceful method to import and (STARE) index commonly used remote sensing products into SciDB. A speedup potential hereby exist with SciDB's \textit{accelerated-io} plugin which allows data sharding prior to loading. 
 
 
 %scidb4gdal\footnote{\url{https://github.com/appelmar/scidb4gdal}}, 
@@ -171,15 +171,15 @@ I will continue the development of a graceful method to import and STARE-index c
 I want to extend SciDB to utilize STARE to perform spatiotemporal operations, such as spatial joins, aggregation, and subsetting.
 
 \paragraph{STARE in python (pystare)}
-Though the existence of STARE may be completely hidden to a user of EarthDB 2.0, the exposition of STARE functionality to a high-level programming language will be required for educational and debugging purposes. I therefore want to enable common python geometry representations such as \textit{shapely} and \textit{geopandas} to be convertible to and from STARE representations.
+Though the existence of STARE may be completely opaque to a user of EarthDB 2.0, the exposition of STARE functionality to a high-level programming language will be required for educational and debugging purposes. I therefore want to enable common python geometry representations such as \textit{shapely} and \textit{geopandas} to be convertible to and from STARE representations.
 
 \paragraph{Proxy objects}
-Commonly, a user interacts with SciDB through the cumbersome iquery shell in \gls{AFL} and \gls{AQL}. 
+Commonly, a user interacts with SciDB through the cumbersome \textit{iquery} shell in \gls{AFL} and \gls{AQL}. 
 Apart from that, the python library \textit{scidb-py} exposes proxy objects of scidb arrays to python. 
-I want to extend these proxy objects to allow processing of common spatiotemporal operations\footnote{Seminally to the anticipated capabilities of STARS (\url{https://github.com/r-spatial/stars}) and openEO \url{http://openeo.org/}}.
+I want to extend these proxy objects to allow invocation of common spatiotemporal operations\footnote{Seminally to the anticipated capabilities of STARS (\url{https://github.com/r-spatial/stars}) and openEO \url{http://openeo.org/}}.
 
 \paragraph{Additional Server-Side Functions}
-For more complex analysis, users may want to add additional server-side functions, e.g. to calculate \gls{NDVI} or \gls{NDSI}. I want to describe a pathway for users to add such custom server-side functions, whilst defining the limitations of such functions.
+For more complex analysis, users may want to add additional server-side functions (e.g. to calculate \gls{NDVI} or \gls{NDSI}). I want to describe a pathway for users to add such custom server-side functions, whilst defining their limitations.
 
 \paragraph{Database setup}
 Due to its small userbase, no common best practices for the setup of a SciDB cluster exists; let alone for the use in environmental sciences. I herefore want at the very least describe the lessons learned from chunking/sharding strategies, RAID layouts, and SciDB instance configuration.
@@ -192,7 +192,7 @@ Due to its small userbase, no common best practices for the setup of a SciDB clu
 
 
 
-\subsection{Use case}
+\subsection{Science use case}
 In order to verify the usability of the previously proposed solution of EarthDB 2.0 in environmental science, I am going to use EarthDB 2.0 to solve environmental science domain use cases. Besides solving a domain problem itself, the work on these uses cases will enable me to exhibit typical interactions between environmental scientists and EarthDB 2.0.
 
 I am intending to carry out two distinct use cases. The first one to verify general and simple spatiotemporal functionality, and the second one to demonstrate that complex environmental uses cases can be addressed with EarthDB 2.0.
@@ -201,18 +201,18 @@ I am intending to carry out two distinct use cases. The first one to verify gene
 The \gls{VIIRS} onboard the Suomi \gls{NPP} has a \gls{DNB} that is sensitive to visible and near-infrared wavelengths, which enables it to observe nighttime lights on Earth at a significantly higher spatial and temporal resolution than its predecessors such as the \gls{DMSP}-\gls{OLS}. 
 
 Prof. Mark Buntaine proposed to utilize timeseries of averaged nightlight intensity during/after natural disasters over  given administrative area as a predictor of the administrative area's resilience to disasters. 
-As the \gls{DNB} product is only available as swath product (and hence each pixel located in an irregular grid), a conventional \gls{GIS}, such as PostGIS, would necessitate billions of transcendental point-in-polygon tests in order to associate individual DNB \gls{FOV}/Pixels with an according administrative area. Even with r-tree indexing of the administrative areas, an on-the-fly workflow is impossible even for a small spatial extent such as Puerto Rico.
+As the \gls{VIIRS} \gls{DNB} product is only available as swath product (and hence each pixel located in an irregular grid), a conventional \gls{GIS}, such as PostGIS, would necessitate billions of transcendental point-in-polygon tests in order to associate individual DNB \gls{FOV}/Pixels with an according administrative area. Even with r-tree indexing of the administrative areas, an on-the-fly workflow is impossible even for a small spatial extent such as Puerto Rico.
 
-In order to demonstrate EarthDB 2.0's capability, I want to import the entirety of \gls{VIIRS} \gls{DNB} data for the continent of Africa and enable users to extract timeseries of nightlight intensities for arbitrary polygons (e.g. each level 2 administrative area) on-the-fly. 
+In order to demonstrate EarthDB 2.0's capability, I want to import the entirety of \gls{VIIRS} \gls{DNB} data for the continent of Africa and enable users to extract timeseries of averaged nightlight intensities for arbitrary polygons (e.g. each level 2 administrative area) on-the-fly. 
 
 I am intending to demonstrate my first findings of this approach during the 2020 ESIP winter meeting and refined findings during the 2020 ACM SigSpatial meeting.
 
 
 \subsubsection{Multi sensor snow mapping}
-I want to implement a snow mapping system that utilizes swath data from multiple sensors. The reason for the use of multiple sensors is twofold. Firstly, it allows for cross verification of results. This is a requirement for the development and testing of any novel algorithm. Secondly, the use of multiple sensors increases the aggregated revisit rates, therefore increasing the temporal and/or spatial resolution of snowmaps\footnote{In the sense of a pendant to \glspl{HRPP}, which are designed to provide the best precipitation estimate at any given time using data from multiple satellites \citep{Lettenmaier2015}}.
+I want to implement a snow mapping system that utilizes low-level/swath data from multiple sensors. The reason for the use of multiple sensors is twofold. Firstly, it allows for cross verification of results. This is a requirement for the development and testing of any novel algorithm. Secondly, the use of multiple sensors increases the aggregated revisit rates, therefore increasing the temporal and/or spatial resolution of snowmaps\footnote{In the sense of a pendant to \glspl{HRPP}, which are designed to provide the best precipitation estimate at any given time using data from multiple satellites \citep{Lettenmaier2015}}.
 The use of lower level products will avoid artifacts caused by resampling and further increase the spatial and temporal resolution by circumventing the pre-defined gridding of higher level products\footnote{High level products use a referencing matrix that provides information on coordinates of an image corner, pixel spacing, and rotation and thereby allows calculation of the coordinates of any point in the image. However, translating imagery acquired from satellite into such a coordinate system requires resampling of the measured radiances, thereby risking introduction of artifacts into the data.}. Additionally, it will allow for the integration of products that are only available at lower levels, such as the MODIS thermal bands from calibrated radiance (MOD02KM / MYD02KM).
 
-Multi-sensor sub-pixel snowmapping is an interesting use case to test EarthDB 2.0 two reasons.
+Multi-sensor sub-pixel snowmapping is an interesting use case to test EarthDB 2.0 for two reasons.
 Firstly, \gls{STARE} is assumed to facilitate the integration of inhomogeneous data from various sensors at different spatial and temporal resolutions. 
 Secondly, \gls{STARE} is assumed to facilitate the integration of lower level swath products, which are otherwise cumbersome to work with. Both of these assumptions can be verified in this use case.
 
@@ -247,7 +247,7 @@ This major advantage causes a problem at the same time. As we know from \cite{Wa
 This means that the shape of the reflectance spectrum of 
 snow with large grain sizes and high impurity concentration will have a similar spectral shape as finegrained clean snow.
 
-Consequently, MODSCAG will have challenges distinguishing between pure fine grained snow (lowest albedo) and dirty coarse grained snow (highest albedo) and will randomly pick one of these extremes in the snow-line area.
+Consequently, \gls{MODSCAG} has challenges distinguishing between pure fine grained snow (lowest albedo) and dirty coarse grained snow (highest albedo) and will randomly pick one of these extremes in e.g. the snow-line area.
 
 In order to avoid the confusion between fine-clean and coarse-dirty snow, the absolute reflectances have to be considered.
 This in term will make it necessary to also control for the illumination angle $\phi$.
@@ -284,11 +284,11 @@ I will carry out the above mentioned undertakings as part of NASA's \gls{ACCESS}
 \newpage
 \section{Timeline}
 
+The envisaged scheduling of the major milestones for the upcoming two academic years are summarized in the table below:
 
 \begin{table}[ht]
  \centering
- 
-The envisaged scheduling of the major milestones for the upcoming two academic years are summarized in the table below:
+
 
 \begin{tabular}{l l l l}
 \toprule
@@ -308,9 +308,9 @@ The envisaged scheduling of the major milestones for the upcoming two academic y
 
 
 \section{Funding}
-During the Academic year of 2019/2020, I am anticipated to be financially supported through a GSR position funded by the Rilee Systems Technologies; STARE, Project Code FJN04.
+During the Academic year of 2019/2020, I anticipate to be financially supported through a GSR position funded by the Rilee Systems Technologies; STARE, Project Code FJN04.
 
-During the Academic year of 2020/2021, I am anticipated to be financially supported through a Bren Fellowship.
+During the Academic year of 2020/2021, I anticipate to be financially supported through a Bren Fellowship.
 
 
 
@@ -345,16 +345,22 @@ On the technical side, robustness, openness, and uniformity in data publication 
 The ability to receive credit for cited data may increase the motivation for researchers to publish their data \citep{Crosas2011, AltKin07}. However, there is no common agreement on the implementation of data citations, especially if subsets are to be cited or data is dynamic \citep{Kratz2014, Assante2016}. \cite{Belter2014} finds that even when used, data citation practices are inconsistent. \cite{Assante2016} illustrates the range of practices which span from exporting a formatted citation string or a generic format such as RIS or BibTex, to embedded links to the dataset, or sharing to social media. 
 
 \cite{Silvello2017} provides an exhaustive review of the current state of data citations in terms of reasons for the necessity of data citations and on current examples of data citation implementations. Based on a meta-study, the author identified 6 main motivations for data citations: Attribution, Connection, Discovery, Sharing, Impact, Reproducability. 
-Arguably, these motivations can be condensed to Identity, Credit, and Access: 
+Arguably, these motivations can be condensed to Identity, Attribution, and Access: 
 
 \paragraph{Identity:} 
-Citations provide an identity to data, enabling to refer to and reason about data \citep{Bandrowski2016}, even if the data does no longer exist or is behind paywalls. 
-\paragraph{Credit:}
-Citations provide a way to give credit to the authors. 
-In combination with the identity, which allows to evaluate how the data was used over time, how relevant, and how impactful it is \citep{Honor2016}, the possibility to receive credit consequently provides an incentive for sharing \citep{Niemeyer2016, Callaghan2012, Kratz2014}. Initiatives such as ``Making Data Count''\citep{Kratz2015} recognize this and supply the community with principles and implementations to obtain data usage metrics.
+Citations provide an identity, enabling to reference and reason about data \citep{Bandrowski2016}, even if it does no longer exist or is behind paywalls. 
+Distiguishing and uniquely identifying data also allows to evaluate its usage and hence its relevance and impact \citep{Honor2016}.
+
+\paragraph{Attribution:}
+Citations attribute data to authors and therfore allow to give credit.
+The possibility to receive credit in term provides an incentive for sharing \citep{Niemeyer2016, Callaghan2012, Kratz2014}. 
+
+
+%Initiatives such as ``Making Data Count''\citep{Kratz2015} recognize this and supply the community with principles and implementations to obtain data usage metrics.
 
 \paragraph{Access:} 
-A citation provides information on how to retrieve the cited material (e.g. the journal, year and pages). Persistent access to data is crucial since it is the foundation of reusability and reproducability \citep{Starr2015}.
+A citation provides information on how to retrieve the cited material (e.g. the journal, year and pages). Persistent access to data is crucial since it is the foundation of reusability and reproducability \citep{Starr2015}. 
+
 Data citations may provide an additional side-effect improving data accessibility: There is evidence suggesting that well curated data will be cited favorably \citep{Belter2014}. Citations therefore may be a motivating driver for researchers to sustainably curate their data and thus making them more accessible.
 
 
@@ -531,23 +537,53 @@ Following a list of the most notable ones:
 \citep{CODATA2013} Are the \gls{CODATA} recommendations.
 
 %%%%%%%%%%%%%%%%%%%
-\subsubsection{Implementations}
 
-\citep{Austin2016}: MatDB\footnote{\url{http://doi.org/10.17616/R3J917}} for engineering materials 
+\subsection{Related work}
+Several services for automized data citation creation have been presented in the past. 
 
-\citep{Alawini2017}: Eagle-i ``resource discovery'' for biomedical research.
+MatDB\footnote{\url{http://doi.org/10.17616/R3J917}} implements a data publication and citation service for engineering materials. Dataset are made citable by enforcing minimal discipline-specific metadata and minting DataCite DOIs. Fixity is assured by snapshotting the dataset at the time of DOI minting. Revisability of data is made possible through policy enforced versioning \citep{Austin2016}.
 
-\citep{Crosas2011}: Dataverse
+\cite{Alawini2017}, created a citation service for the \gls{RDF} eagle-i database. Since this database itself does not version its data (only the most recent version is available), the authors implemented an external service that versions eagle-i data in order to provide access to revised data to the users. The service tracks and stores every change in the original dataset.  The authors note that this approach is viable for eagle-i since the dataset changes very slowly.
 
-\citep{Buneman2016}: \gls{MODIS} and IUPHAR DB GtoPdb for drugs in clinical use. Only theoretical
+In the dataverse networks software \citep{Crosas2011}, data is aggregated in 'studies'. Studies may contain several datasets. Each study shares a common persistent identifier. Citation to a dataset (and subsets) is implemented as the combination of the studie's \gls{PID} appended with the UNF of the cited data.
 
-\citep{Buneman2010}: IUPHAR DB GtoPdb for drugs in clinical use
+\cite{Cook2016} presents the data product citations at a \gls{ORNL} \gls{DAAC}. The DAAC assigns a \gls{DOI} per dataset, which may contain anywhere between one and tens of thousands of files. A single file within a dataset can be identified by appending the file's UUID to the DOI (using the 'urlappend' functionality of the DOI resolver). The DAAC also provides a MODIS subsetting service. The user can request a citation to the subset which is comprised of the dataset's citation appended with a textual description of the temporal and/or spatial subsetting. The citation can be requested both as a plain string as well as in BibTex format.
 
-\citep{Cook2016}: Citations for Oak Ridge National Laboratory Distributed Active Archive Center (ORNL DAAC).
+A very similar approach is implemented for the \gls{ARM} Data Archive \citep{Prakash2016}. Upon data order fulfillment, the user is provided with both the data and a citation that contains a citation including a textual description of the temporal and/or spatial subsetting. The \gls{ARM} Data Archive additionally hosts a citation creator, which is a \gls{GUI} that allows the creation of a data citation subject to a fully qualified dataset stream name, and optionally manually specified subsetting parameters. The user hereby can choose between the custom ARM citation style, APA, MLA, and chicago.
 
-\citep{Honor2016}: Citations for Neuroimaging (NITRC).
+\cite{Honor2016} describes a reference implementation for data citations of a database holding neuroimaging (the specific use-case is the \gls{NITRC}). The citable unit for their use-case are individual images, which are aggregated in studies/projects. Upon data upload, hierarchically, both each image as well as each studies is assigned a \gls{DOI}. The authors recognize that this implementation may result in the generation of many \glspl{DOI}, however evaluate the solution feasible for their use case.
 
-\citep{Proll2013}: Provides a reference implementation for \gls{RDBMS}. Use case: Large concrete dams which are used for hydroelectric power generation
+\cite{Proll2013} present a reference implementation for data citations to data managed by a \gls{RDBMS}. 
+The system is based on the premise that a timestamped SELECT query can correctly identify data. To allow revisability, the system timestamps every \gls{CUD} operation and acknowledges validity timeranges of records rather than allowing modification of records. When a user wants to create a citable subset, the system will store the according timestamped SELECT query, calculates a hash for the result set and assigns a PID to the query. 
+
+\cite{Schubert2019} recognize that a manual identification of data is impractical and imprecise. The authors developed a dynamic data citation solution for the data service \gls{CCCA} which closely follow the \gls{RDA} \gls{WGDC} \citep{Rauber2015, Rauber2015} recommendations. CCCA is a a webservice that allows subsetting of data through restful queries and is based on \gls{TDS}.
+The metadata of a subset is constructed as the concatenation of the dataset metadata and the query arguments as well as name of subset creator and check-sums. 
+Handle is used as a PID service
+
+
+\citep{Buneman2010}: Rule based citation approach; application IUPHAR DB and EAD
+\citep{Buneman2016}: Rule based citation approach; application: MODIS and IUPHAR 
+
+\begin{table}
+\caption{Comparison of automated data citation systems}
+\begin{tabular}{l l l l l}
+\toprule
+    Repo        & PID           & Revisability   & Fixity   & Deep Citation \\\midrule
+    MatDB       & DOIs          & Versioning     & Snapshot & No  \\
+    eagle-i     & eagle id      & CUD TS         & UNF      & Query\\
+    Dataverse   & Handle        & Versioning     & UNF      & PID+UNF \\ 
+    ORNL        & DOIs+UID      & Versioning     & None     & Textual \\
+    ARM         & DOIs/Name     & Versioning     & None     & Textual \\
+    NITRC       & DOIs          & N/A            & None     & DOIs  \\
+    RDBMS       & PID           & CUD TS         & UNFs     & Query \\
+    CCCA        & Handle        & Versioning    & No       & Query \\
+\bottomrule     
+\end{tabular}
+\label{tab_citcomp}
+\end{table}
+
+The crosscite DOI Citation formatter\footnote{\url{https://citation.crosscite.org/}} allows to generate citation strings from metadata retrieved from landing pages through content negotiation.
+The citation strings are formatted subject to styles defined through the \gls{CSL}\footnote{\url{https://citationstyles.org/}}.
 
 \newpage
 \subsection{Global indexing schemes}
@@ -588,7 +624,6 @@ In a right justified mapping, trixels that are in proximity but at different lev
 Left justified mapping respects geometric containment by right-padding HTM binary codes with zeros.
 The level (which in right-justified mapping is implicitly given) is specified by the last 5 bits of the 64 bit integer. Therefore, regardless of the resolution, indexes that are co-located are in similar index ranges.
 \cite{Kuo2017} extend the implementation with a temporal component and name the resulting universal geoscience data representation \gls{STARE}.
-\cite{Rilee2018} propose the integration of \gls{STARE} with \gls{OPeNDAP} and to implement cloud-based science use-cases with \gls{STARE}-enabled data access.
 
 \newpage
 
@@ -610,7 +645,7 @@ Traditional ways of measuring the snowpack are snowpillows, snowcourses, and met
 
 For hydrology, \gls{SWE}, is an essential snowpack parameter. However, the snow community lacks an approach for routinely mapping its global distribution \citep{Lettenmaier2015} on a sufficient space-time resolution. The SnowEX \citep{Durand2017} project therefore is seeking to help define a mission proposal. 
 
-Measuring the global extent of snow on the other side is currently generally possible, with challenges arising from a) cloud cover, b) vegetation c) complex terrain. Snow extent can globally and routinely calculated either from a combination of the visible and \gls{SWIR} surface reflectance data, or from (passive and active) microwave \citep{Frei2012} data. Global active microwave data is available from \gls{QuickSCAT}, however only for the time period between 1999 and 2009. Global passive microwave data is continuously available since the 1970s. However, due to the low signal, passive microwave data is only available at coarse resolution.
+Measuring the global extent of snow on the other side is currently generally possible, with challenges arising from a) cloud cover, b) vegetation c) complex terrain. Snow extent can globally and routinely be calculated either from a combination of the visible and \gls{SWIR} surface reflectance data, or from (passive and active) microwave \citep{Frei2012} data. Global active microwave data is available from \gls{QuickSCAT}, however only for the time period between 1999 and 2009. Global passive microwave data is continuously available since the 1970s. However, due to the low signal, passive microwave data is only available at coarse resolution.
 
 Specifically for mountainous regions, characterized by high topographic heterogeneity, spatial resolutions need to be fine enough to sufficiently capture the temporal and spatial variability of the snowpack. \cite{Lettenmaier2015} suggests spatial resolutions of snow extent not coarser than $\approx \SI{100}{\meter}$ and temporal resolution of not more than one week. Hence, passive microwave data is not suitable for snow extent measurements in mountainous areas. The required resolutions also exceed the spatial and/or temporal resolution of visible and \gls{SWIR} reflectance data of spaceborn remote sensing instrument. It therefore is necessary to map snow cover at sub-pixel accuracy \citep{Dozier2004}.
 
