@@ -31,7 +31,8 @@
 \addbibresource{context/CS274.bib} 
 \addbibresource{context/CS270.bib} 
 
-\title{PhD dissertation pre-proposal}
+\title{PhD dissertation proposal}
+\subtitle{Towards the twilight of file-centricity}
 \author{Niklas Griessbaum}
 \date{\today}
 
@@ -39,6 +40,7 @@
 \begin{document}
 \maketitle
 
+\newpage
 \tableofcontents
 
 \newpage
@@ -68,26 +70,26 @@ While this generalizes and simplifies the task for the repositories, it pushes t
 The tragedy in this approach materializes in two bottlenecks: Data movement and data alignment.
 
 \paragraph{Data Movement:}
-A system that is agnostic of the structure of the data it holds is incapable of performing computations on the data. 
-It can merely act as a point of preservation and distribution. Data therefore has to be moved (actually: copied) to the point of computation (Gray's 3rd Law, \cite{Szalay2009}).
+A system that is agnostic of the structure of the data it is holding is incapable of performing computations on the data. 
+It can merely act as a point of preservation and distribution. Data therefore has to be moved (more acurately: copied) to the point of computation (Gray's 3rd Law, \cite{Szalay2009}).
 
 Data movement however is undesired since it results in uncoordinated and unstructured duplication of data and therefore in storage waste.
-Further, we are facing an increasing disparity between network speeds and compute power\footnote{User bandwidth speeds have been following Nielsen's Law \citep{Nielsen1998} and grew annually by \SI{50}{\percent} over the last 36 years while compute power has been following Moore's law \citep{Moore1975} and grew annually by \SI{60}{\percent} for the last 40 years. Source:\url{https://ourworldindata.org/grapher/transistors-per-microprocessor}}, making it less and less attractive and ultimately infeasible to move data to the point of computation \citep{Hey2009}, especially as data volumes grow: While researchers may choose to copy gigabytes worth of data for their analysis, copying petabytes will not be an option in the near future \citep{Szalay2006}.
+Further, we are facing an increasing disparity between network speeds and compute power\footnote{User bandwidth speeds have been following Nielsen's Law \citep{Nielsen1998} and grew annually by \SI{50}{\percent} over the last 36 years while compute power has been following Moore's law \citep{Moore1975} and grew annually by \SI{60}{\percent} for the last 40 years. Source:\url{https://ourworldindata.org/grapher/transistors-per-microprocessor}}, making it less and less attractive and ultimately infeasible to move data to the point of computation \citep{Hey2009} as data volumes grow: While researchers may choose to copy gigabytes worth of data for their analysis, copying petabytes will not be an option in the near future \citep{Szalay2006}.
 
-The pre-defined package size of files hereby make matters worse: If the package size does not exactly equal the area of interest for an analysis \footnote{A file might for example contain bands, areas, or time periods not needed for a given analysis.}, a transfer overhead will arise \citep{Gray2002}.
+The pre-defined package size of files hereby make matters worse: If the package size does not exactly equal the area of interest for an analysis\footnote{A file might for example contain bands, areas, or time periods not needed for a given analysis.}, a transfer overhead will arise \citep{Gray2002}.
 
 \paragraph{Data Alignment:}
-Since files allow repositories to be agnostic of data structures, it removes the repositories from the obligation to address data alignment.
+Since files allow repositories to be agnostic of data structures, it removes them from the obligation to address data alignment.
 Consequently, it becomes the task of the data user to align data during the \gls{ETL} process if various datasets are to be integrated.
 Data alignment is to be understood as providing a common method to express (e.g. spatiotemporal) coincidence throughout all datasets.
 It can be achieved through (re-)projection, aggregation and gridding, or indexing.
 Because methods for alignment are not provided from a central point (i.e. the repository), every user has to manually align data, resulting in redundant effort.
 
-In order to break the stated bottlenecks, the file-centric approach has to be replaced by a system that:
+In order to break the stated bottlenecks, the file-centric approach has to be replaced through a system that:
 \begin{itemize}
-    \item is capable of providing identity to data independently of the packaging.
-    \item does not require manual data alignment.
-    \item voids the necessity to transfer data by being aware of the data structure and therefore being capable of performing computations at the place of storage.
+    \item Is capable of providing identity to data independently of packaging.
+    \item Does not require manual data alignment.
+    \item Voids the necessity to transfer data by being aware of the data structure and therefore being capable of performing computations at the place of storage.
 \end{itemize}
 
 
@@ -97,11 +99,11 @@ In order to break the stated bottlenecks, the file-centric approach has to be re
 I want to address the following challenges to spur the twilight of file-centricity.
 
 \paragraph{Provision of Data Identity and Citations:}
-By abandoning files as the package of data, a natural identity of data is lost. Identity, however, is needed to refer to, and reason about data. Regardless of previous subsetting and processing, data needs to be identifiable and citable. In my dissertation, I want to develop services providing identity and simplifying the creation of citations to data stored in and served through online repositories.
+By abandoning files as the package of data, a natural identity of data is lost. Identity, however, is needed to refer to, and reason about data. Regardless of previous subsetting and processing, data needs to be identifiable and citable. In my dissertation, I want to develop services providing identity and simplifying the creation of citations to data stored in, and served through online repositories.
 
 \paragraph{Data co-location and co-alignment:}
 To avoid movement, data has to be readily co-located at the place of computation. To further make \gls{ETL} processes unnecessary, the co-located, and potentially heterogeneous data also has to be co-aligned. I.e. a common concept to address spatiotemporal coincidence needs to be established throughout all the data. In practice, this means storing data in a database providing indexes, contexts, and schemas. 
-In my dissertation, I want to develop and describe a system system that leverages global indexes and array databases to enable an \gls{ETL}-free workflow.
+In my dissertation, I want to develop a scalable \gls{GIS} system that leverages global indexes and array databases to enable \gls{ETL}-free workflow.
 
 \paragraph{Use Case (Multi-sensor snow mapping):}
 One of the five laws postulated by Jim Gray is that a database designed for a given discipline has to be capable to answer the 20 key questions a scientists may have \citep{Hey2009, Szalay2009}.
@@ -119,9 +121,8 @@ Data citations differ from citations of printed material in that the cited conte
 Technologies such as \gls{WMS}, \gls{WCS}, and the \gls{OPeNDAP} \citep{Gallagher2005} play a key role in the twilight of file-centricity. Their ability to seamlessly provide access to data rather than to files provides an ideal starting point for theoretical and practical excursions on how to address identity and citations in a data-centric workflow. 
 
 
-With the development of the web-service \textit{OCCUR}\footnote{\url{https://github.com/NiklasPhabian/OCCUR}, \url{http://occur.duckdns.org}}, I am exploring an approach for identity assignment and citation generation to data (rather than to files):
+With the development of the web-service \gls{OCCUR}\footnote{\url{https://github.com/NiklasPhabian/OCCUR}, \url{http://occur.duckdns.org}}, I am exploring an approach for identity assignment and citation generation to data:
 \Gls{OCCUR} is a webservice that allows users to assign and store identities to data retrieved from an \gls{OPeNDAP} query. 
-The core challange is hereby data (rather than dataset) identity.
 OCCUR creates identifiers for identities which can later be resolved through \gls{OCCUR}, whereby \gls{OCCUR} will verify that the data has not changed since the creation of the identity. OCCUR brokers identities by ensuring that identical data is sharing the same identity.
 
 \gls{OCCUR} additionally allows users to generate formatted citation snippets for both OCCUR identities and for any \gls{OPeNDAP} query. It is the \gls{OPeNDAP} pendant to \url{www.crosscite.org}, which allows the creation of citation snippets from \glspl{DOI}. 
@@ -129,32 +130,33 @@ OCCUR creates identifiers for identities which can later be resolved through \gl
 The development of \gls{OCCUR} is supported by the \gls{ESIP} federation as a 2018 \gls{ESIP} lab project. The work on \gls{OCCUR} has been presented at the 2017 Bren PhD Symposium and the 2018 \gls{ESIP} summer meeting.
 
 I envisage a submission of a publication on the findings of the development of OCCUR in 2019 to the CODATA Data Science Journal.
-
+% 
 \newpage
 
 \subsection{Data co-location and co-alignment (EarthDB 2.0)}
 In order to relax the necessity to move data prior to knowledge generation, all datasets required for a given analysis have to be readily co-located at the place of computation. The co-located datasets further need to be co-aligned to allow interoperability \citep{Kuo2017, Rilee2016} and make \gls{ETL} processes unnecessary. In practical terms, this means storing the data in a database.
 
-Co-alignment means that a common concept to address spatiotemporal coincidence throughout all datasets exists. It can be achieved through a common indexing schema. A side-effect of co-alignment is that it can be exploited to improve physical data placement: If an index is used to store spatiotemporally coinciding data in physical proximity, it will, for a lot of use-case, be possible to process data (embarrassingly) parallel in a shared-nothing architecture \citep{Kuo2017}.
+Co-alignment means that a common concept to address coincidence throughout all datasets exists. 
+It can be achieved through a common indexing schema. A side-effect of co-alignment is that it can be exploited to improve physical data placement: The index can be used to store coinciding data in physical proximity. This will, for a lot of use-case, allow to process data (embarrassingly) parallel in a shared-nothing architecture \citep{Kuo2017}.
+The prevelant dimensions for which data has to be aligned in environmental science are hereby time and space.
+ 
+The \gls{STARE}\footnote{STARE is a global indexing schema that is built upon the quadtree \gls{HTM}. A review of quadtrees in geospatial indexing is provided in section \ref{lit_index}.} \citep{Kuo2017} provides a common concept to address spatiotemporal coincidence for environmental data, and SciDB\footnote{\url{https://www.paradigm4.com/}} is a candidate database capable of handling large volumes of multidimensional data.
 
-The \gls{STARE}\footnote{STARE is a global indexing schema that is built upon the quadtree \gls{HTM}. A review of quadtrees in geospatial indexing is provided in section \ref{lit_index}.} \citep{Kuo2017} provides such a common concept to address spatiotemporal coincidence for environmental data, while SciDB\footnote{\url{https://www.paradigm4.com/}} is a candidate database capable of handling large volumes of \gls{STARE}-indexed data.
+I started the development of EarthDB 2.0, a database based \gls{GIS} capable of handling diverse data. 
+EarthDB 2.0 is implemented in SciDB and therefore anticipated to scale vertically and horizontally.
+At first glance, EarthDB 2.0 tries to achieve similar functinality as Google Earth Engine \citep{Gorelick2017}: Both are scalable \gls{GIS} systems that shield user from \gls{ETL} and \gls{HPC}. However while Earth Engine is a tile database and thus bound to gridded data, EarthDB 2.0 utilizes \gls{STARE} to index individual pixels and therefore does not require data to be located in a regular grid. 
 
-I started the development of EarthDB 2.0, a database based \gls{GIS} capable of handling diverse swath data. 
-EarthDB is implemented in SciDB and therefore anticipated to scale vertically and horizontally.
-At first glance, EarthDB 2.0 tries to fill a similar role as Google Earth Engine \citep{Gorelick2017} (both shield user from \gls{ETL} and \gls{HPC}). However while Earth Engine is a tile database incapable of handling swath data, EarthDB utilizes STARE to index individual pixels regardless of the existence of a regular grid. 
-
-I have presented the findings of an early stage of this system during an oral presentation at the 2017 \gls{AGU} Fall meeting. I want to continue this development to create a SciDB-STARE based system capable of solving common problems in science use-cases (EarthDB 2.0). In particular, this includes the following developments:
+I have presented the findings of an early stage of EarthDB 2.0 during an oral presentation at the 2017 \gls{AGU} Fall meeting. I want to continue the development of EarthDB to create a system capable of solving common problems in environmental science. In particular, this includes developing of the following:
 
 \paragraph{Schema recommendations}
-I want to identify apt SciDB array schemas to hold heterogeneous, but STARE-indexed remote-sensing data products. 
-Of crucial importance is hereby the distinguishing between STARE as an index and STARE as a representation.
+I want to identify apt SciDB array schemas to hold heterogeneous, but STARE-indexed remote-sensing data products as well as other commonly used geometry information and metdata.
+%Of crucial importance is hereby the distinguishing between STARE as an index and STARE as a representation.
 %\footnote{Pixels can be indexed through tessellation or through indexing of the centroids. However, how can we quantify the loss of accuracy for the different methods, and how can we quantify the storage and compute overhead for pixels indexed through tessellation?} 
 
 
 \paragraph{Data Loading}
-Loading data to SciDB is seen as its Achilles' Heel. Countless attempts for loading remote sensing data to scidb have been carried out\footnote{scidb4gdal, modbase, scidb-hdf5, sls, modis2scidb, and arraybridge to name a few}. 
-I will continue the development of a graceful method to import and index commonly used remote sensing products in SciDB.
-A speedup potential hereby exist with SciDB's accelerated-io plugin which allows data sharding during loading. It is unclear at this moment if this is feasible.
+Loading data to SciDB is considered its Achilles' Heel. Countless attempts for loading remote sensing data to SciDB have been carried out\footnote{scidb4gdal, modbase, scidb-hdf5, sls, modis2scidb, and arraybridge to name a few}. 
+I will continue the development of a graceful method to import and STARE-index commonly used remote sensing products into SciDB. A speedup potential hereby exist with SciDB's accelerated-io plugin which allows data sharding prior to loading. 
 
 
 %scidb4gdal\footnote{\url{https://github.com/appelmar/scidb4gdal}}, 
@@ -166,13 +168,15 @@ A speedup potential hereby exist with SciDB's accelerated-io plugin which allows
 %arraybridge\footnote{\url{https://code.osu.edu/arraybridge/scidb}, \url{https://github.com/hbsnmyj/arraybridge}} \citep{Xing2017}.
 
 \paragraph{Spatiotemporal serverside functions}
-I want to extend SciDB to utilize STARE to perform spatiotemporal operations, such as spatial aggregation and subsetting.
+I want to extend SciDB to utilize STARE to perform spatiotemporal operations, such as spatial joins, aggregation, and subsetting.
 
 \paragraph{STARE in python (pystare)}
-Though the existence of STARE may be completely hidden to a user of EarthDB 2.0, the exposition of STARE functionality to a high-level programming language will be required for educational and debugging purposes
+Though the existence of STARE may be completely hidden to a user of EarthDB 2.0, the exposition of STARE functionality to a high-level programming language will be required for educational and debugging purposes. I therefore want to enable common python geometry representations such as \textit{shapely} and \textit{geopandas} to be convertible to and from STARE representations.
 
 \paragraph{Proxy objects}
-Commonly, a user interacts with SciDB through the cumbersome iquery shell in \gls{AFL} or \gls{AQL}. Scidb-py additionally exposes proxy objects of scidb arrays to python. I want to extend these proxy objects to handle common spatiotemporal operations\footnote{Seminally to the anticipated capabilities of STARS (\url{https://github.com/r-spatial/stars}) and openEO \url{http://openeo.org/}}.
+Commonly, a user interacts with SciDB through the cumbersome iquery shell in \gls{AFL} and \gls{AQL}. 
+Apart from that, the python library \textit{scidb-py} exposes proxy objects of scidb arrays to python. 
+I want to extend these proxy objects to allow processing of common spatiotemporal operations\footnote{Seminally to the anticipated capabilities of STARS (\url{https://github.com/r-spatial/stars}) and openEO \url{http://openeo.org/}}.
 
 \paragraph{Additional Server-Side Functions}
 For more complex analysis, users may want to add additional server-side functions, e.g. to calculate \gls{NDVI} or \gls{NDSI}. I want to describe a pathway for users to add such custom server-side functions, whilst defining the limitations of such functions.
@@ -189,24 +193,23 @@ Due to its small userbase, no common best practices for the setup of a SciDB clu
 
 
 \subsection{Use case}
-In order to verify the usability of the previously proposed solution of EarthDB 2.0 in environmental science, I am going to use it to solve environmental science domain use cases. Besides solving a domain problem, the work on these uses cases will 
-enable me to exhibit typical interactions between environmental scientists and SciDB-STARE.
+In order to verify the usability of the previously proposed solution of EarthDB 2.0 in environmental science, I am going to use EarthDB 2.0 to solve environmental science domain use cases. Besides solving a domain problem itself, the work on these uses cases will enable me to exhibit typical interactions between environmental scientists and EarthDB 2.0.
 
-I am intending to carry out two distinct use cases. The first one to verify general and simple spatiotemporal functionality, and the second one to demonstrate that complex environmental uses cases can be addressed with the proposed system.
+I am intending to carry out two distinct use cases. The first one to verify general and simple spatiotemporal functionality, and the second one to demonstrate that complex environmental uses cases can be addressed with EarthDB 2.0.
 
 \subsubsection{Night lights}
-The \gls{VIIRS} onboard the Suomi \gls{NPP} has a Day/Night band that is sensitive to visible and near-infrared wavelengths, which enables it able to observe nighttime lights on Earth at a significantly higher spatial and temporal resolution than its predecessors such as the \gls{DMSP}-\gls{OLS}. 
+The \gls{VIIRS} onboard the Suomi \gls{NPP} has a \gls{DNB} that is sensitive to visible and near-infrared wavelengths, which enables it to observe nighttime lights on Earth at a significantly higher spatial and temporal resolution than its predecessors such as the \gls{DMSP}-\gls{OLS}. 
 
 Prof. Mark Buntaine proposed to utilize timeseries of averaged nightlight intensity during/after natural disasters over  given administrative area as a predictor of the administrative area's resilience to disasters. 
-As the DNB product is only available as swath product (and hence each pixel located in an irregular grid), a conventional \gls{GIS}, such as PostGIS, would necessitate billions of point-in-polygon tests in order to associate individual DNB \gls{FOV}/Pixels with an according administrative area. Even with r-tree indexing of the administrative areas, an on-the-fly workflow is impossible even for a small spatial extent such as Puerto Rico.
+As the \gls{DNB} product is only available as swath product (and hence each pixel located in an irregular grid), a conventional \gls{GIS}, such as PostGIS, would necessitate billions of transcendental point-in-polygon tests in order to associate individual DNB \gls{FOV}/Pixels with an according administrative area. Even with r-tree indexing of the administrative areas, an on-the-fly workflow is impossible even for a small spatial extent such as Puerto Rico.
 
-In order to demonstrate the proposed systems capability, I want to import the entirety of VIIRS DNB data for the continent of Africa and enable users to extract timeseries of nightlight intensities for arbitrary polygons (e.g. each level 2 administrative area) on-the-fly. 
+In order to demonstrate EarthDB 2.0's capability, I want to import the entirety of \gls{VIIRS} \gls{DNB} data for the continent of Africa and enable users to extract timeseries of nightlight intensities for arbitrary polygons (e.g. each level 2 administrative area) on-the-fly. 
 
-I am intending to demonstrate my first findings from this approach during the 2020 ESIP winter meeting and refined findings during the 2020 ACM SigSpatial meeting.
+I am intending to demonstrate my first findings of this approach during the 2020 ESIP winter meeting and refined findings during the 2020 ACM SigSpatial meeting.
 
 
 \subsubsection{Multi sensor snow mapping}
-I want to implement a snow mapping system that incorporates low level (swath) data from multiple sensors. The reason for the use of multiple sensors is twofold. Firstly, it allows for cross verification of results. This is a requirement for the development and testing of any novel algorithm. Secondly, the use of multiple sensors increases the aggregated revisit rates, therefore increasing the temporal and/or spatial resolution of snowmaps\footnote{In the sense of a pendant to \glspl{HRPP}, which are designed to provide the best precipitation estimate at any given time using data from multiple satellites \citep{Lettenmaier2015}}.
+I want to implement a snow mapping system that utilizes swath data from multiple sensors. The reason for the use of multiple sensors is twofold. Firstly, it allows for cross verification of results. This is a requirement for the development and testing of any novel algorithm. Secondly, the use of multiple sensors increases the aggregated revisit rates, therefore increasing the temporal and/or spatial resolution of snowmaps\footnote{In the sense of a pendant to \glspl{HRPP}, which are designed to provide the best precipitation estimate at any given time using data from multiple satellites \citep{Lettenmaier2015}}.
 The use of lower level products will avoid artifacts caused by resampling and further increase the spatial and temporal resolution by circumventing the pre-defined gridding of higher level products\footnote{High level products use a referencing matrix that provides information on coordinates of an image corner, pixel spacing, and rotation and thereby allows calculation of the coordinates of any point in the image. However, translating imagery acquired from satellite into such a coordinate system requires resampling of the measured radiances, thereby risking introduction of artifacts into the data.}. Additionally, it will allow for the integration of products that are only available at lower levels, such as the MODIS thermal bands from calibrated radiance (MOD02KM / MYD02KM).
 
 Multi-sensor sub-pixel snowmapping is an interesting use case to test EarthDB 2.0 two reasons.
@@ -218,38 +221,98 @@ Secondly, \gls{STARE} is assumed to facilitate the integration of lower level sw
 Using gridded data allows to ignore issues connected to the wide viewing geometry of MODIS causing a) variations in pixel sizes in scan directions and b) anisotropic reflectances at shallow viewing angles. I  propose to relax these simplification by porting MODSCAG to use MODIS swath data (MOD09) within EarthDB 2.0.
 
 \paragraph{Inclusion of other sensors:}
-MODSCAG has already been adapted to VIIRS and Landsat TM. I propose to implement MODSCAG for these and other multispectral sensors, such as Landsat 8, \gls{GOES}-16/17, FengYun-4a, or Himawari-8/9 in EarthDB 2.0. I hereby expect STARE to provide a technology facilitating the access and comparison of results of spatiotemporal coincidence. If possible, I will import in-situ measures from snow-tracks or snow pillows, as well as airborne measurements from \gls{AVIRIS} and the \gls{ASO} to EarthDB 2.0 for cross-verification.
+MODSCAG has already been adapted to VIIRS and Landsat TM. I propose to implement MODSCAG for these and other multispectral sensors, such as Landsat 8, \gls{GOES}-16/17, FengYun-4a, or Himawari-8/9 in EarthDB 2.0. I hereby expect EarthDB 2.0 to provide a technology facilitating the access and comparison of results of spatiotemporal coincidence. If possible, I will import in-situ measures from snow-tracks or snow pillows, as well as airborne measurements from \gls{AVIRIS} and the \gls{ASO} to EarthDB 2.0 for cross-verification.
 
 \paragraph{From \gls{MODSCAG} to \gls{SCAGD}:}
 I propose to contribute to the development of \gls{SCAGD}, an advancement of \gls{MODSCAG}, which is currently under development by Jeff Dozier.
-\gls{SCAGD} implements four difference to \gls{MODSCAG}:
 
-\begin{enumerate}
- \item Instead of optimizing a combination of pre-calculated snow endmembers, \gls{SCAGD} non-linearly solves for snow parameters (grain size and impurities). 
- 
- \item \gls{MODSCAG} selects the reference (i.e. non-snowcovered) reflectance spectrum from a library. In contrary, \gls{SCAGD} extracts the reference reflectance spectrum of each pixel either from its history (i.e. summer) or from adjacent pixels. In that regards, it will become irrelevant what the reference endmember is (rocks, dirt, vegetation).  
- 
- \item \gls{MODSCAG}'s spectral analysis is solely based on the shape of the spectra, not on their absolute values. This allows \gls{MODSCAG} to disregard the illumination angle and hence the terrain. This allows \gls{MODSCAG} to produce results in mountainous regions in which the terrain is not known at a sufficient resolution. 
- However, by disregarding the absolute reflectance, distinguishing between dirty and fresh snow becomes blurry as both small grain sizes and dirt reduce the difference between reflectance in \gls{NIR} and \gls{SW} of snow.  
- Instead of only using the relative shapes of the spectra, \gls{SCAGD} uses the actual absolute reflectances. In general, recovering absolute reflectances is a challenge in mountains since the illumination angles generally are unknown since \gls{DEM} are not precises enough to represent the rough terrain. 
- \gls{SCAGD} estimates the absolute reflectances by solving for the zenith angles of the terrain through comparison of temporarily close apparent reflectance measurements of the same area with varying viewing and solar angles and under the assumption of snow behaving as a lambertian surface.
- By using the actual absolute reflectances \gls{SCAGD} can distinguish between dirty and fresh snow more accurately.
- 
- \item Independently of knowledge about illumination angle, grain size might be obtainable from the attenuation dip in the spectrum. 
- 
-\end{enumerate}
+MODSCAG simultaneously estimates the fractional snow cover and the snow grain size \citep{Painter2009} from MODIS surface reflectance data. It does so by assuming that the signal that MODIS receives is a linear spectral mixture of endmembers within a pixel. The endmembers namely are snow, different types of rock, soil, vegetation, and lake ice.
+
+\begin{equation}
+ R_\lambda = \epsilon_{\lambda} + \sum_{k=1}^N f_k* R_{\lambda, l}
+\end{equation}
+
+MODSCAG then minimizes the least square error of this linear combination of the end-member spectra to determine the snow endmember.
+
+MODSCAG takes the assumption that snow does not behave as a lambertian surface and therefore the \gls{BRDF} is negligible. 
+This in term allows for the assumption that the shape of the snow's reflectance spectrum is independent of the the solar angle. MODSCAG exploits this by solving for the shape of the spectrum rather than the absolute reflectance. This is advantageous since errors in co-registration of image and DEM (which would be required for the determination of the solar angle) are circumvented.
+
+This major advantage causes a problem at the same time. As we know from \cite{Warren1982}, 
+
+\begin{itemize}
+ \item Reflectance of snow in the NIR decreases with increasing grain size
+ \item Reflectance of snow in the VIS decreases with increasing impurities
+\end{itemize}
+
+This means that the shape of the reflectance spectrum of 
+snow with large grain sizes and high impurity concentration will have a similar spectral shape as finegrained clean snow.
+
+Consequently, MODSCAG will have challenges distinguishing between pure fine grained snow (lowest albedo) and dirty coarse grained snow (highest albedo) and will randomly pick one of these extremes in the snow-line area.
+
+In order to avoid the confusion between fine-clean and coarse-dirty snow, the absolute reflectances have to be considered.
+This in term will make it necessary to also control for the illumination angle $\phi$.
+In order to increase the buffer of overdetermination, instead of solving for the non-snow endmembers, we can avoid solving for the non-snow endmembers by instead measured it during the summer through a continuum approach\footnote{Creating a Continuum approach should be greatly simplified in EarthDB 2.0}.
+
+The reflectances at the MODIS sensor consequently are a function of
+
+\begin{equation}
+    R_{\lambda} + \epsilon_{\lambda} = F(f_{snow}, \lambda, r_{snow}, h, \phi, c_{dust}, r_{dust}, c_{soot}, r_{soot}, R_{NS})
+\end{equation}
+
+Where $f_{snow}$ is the snowcover area, 
+$r_{snow}$ the grain size, 
+$h$ the elevation,  
+$\phi$ the illumination angle 
+$c_{dust}$ and $c_{soot}$ the dust and soot concentration
+$r_{soot}$ and $r_{soot}$ the dust and soot grain sizes
+and $R_{NS}$ the background/non-snow reflectance.
+
+With an appropriate reflectance and radiative transfer model, the above equation can be used to minimize the root least square error:
+\begin{equation}
+\begin{split}
+min.\; RMSE \\
+ RMSE = \sqrt{ \frac{1}{n_{\lambda}} \sum_{\lambda=1}^{n_\lambda} * \epsilon_{\lambda}^2}
+ \end{split}
+\end{equation}
 
  
-As of now, the algorithm is implemented and tested on hyperspectral \gls{AVIRIS} and \gls{AVIRIS-NG} data, which is only sparsely available. Further. it is unclear whether part 3 and 4 of the above mentioned characteristics of \gls{SCAGD} can reliably produce results, especially when using lower resolution data. To investigate this question, I intend to implement \gls{SCAGD} in STARE-SciDB to work with multispectral data from \gls{MODIS}, \gls{VIIRS}, \gls{GOES} and/or Himawari 8.
-
+As of now, the algorithm is implemented and tested on hyperspectral \gls{AVIRIS} and \gls{AVIRIS-NG} data, which is only sparsely available. I intend to implement \gls{SCAGD} in EarthDB 2.0 to work with multispectral data from \gls{MODIS}, \gls{VIIRS}, \gls{GOES} and/or Himawari 8.
 
 I will carry out the above mentioned undertakings as part of NASA's \gls{ACCESS}\footnote{Funding Opportunity Number: NNH17ZDA001N-ACCESS} program project ''STARE: SpatioTemporal Adaptive-Resolution Encoding to Unify Diverse Earth Science Data for Integrative Analysis''\footnote{Proposal Number: '17-ACCESS17-0039'}. Experiments will be carried out on an apt region of interest (e.g. Tuolumne Basin, Merced Basin, or San Joaquin in the eastern Sierra Nevada or and/or a Himachal Pradesh in India). 
 
 
+\newpage
 \section{Timeline}
 
 
+\begin{table}[ht]
+ \centering
+ 
+The envisaged scheduling of the major milestones for the upcoming two academic years are summarized in the table below:
+
+\begin{tabular}{l l l l}
+\toprule
+    Date        & Venue            & Type       & Subject                           \\ \midrule
+    2019-12-31  & CODATA           & Submission & OCCUR paper                       \\
+    2020-01-06  & ESIP             & Demo       & Nightlights 	                    \\
+    2020-01-06  & IGARSS           & Tutorial   & EarthDB 2.0 / PyStare             \\
+    2020-11-01  & SigSpatial	   & Oral       & Nightlights 	                    \\
+    2020-12-31  & N/A              & Submission & EarthDB 2.0                       \\
+    2021-05-01  & N/A              & Submission & SCAGD                             \\
+    2021-06-01  & Defense	       & Defense    &  -                                \\
+\bottomrule
+    
+    
+\end{tabular}
+\end{table}
+
+
 \section{Funding}
+During the Academic year of 2019/2020, I am anticipated to be financially supported through a GSR position funded by the Rilee Systems Technologies; STARE, Project Code FJN04.
+
+During the Academic year of 2020/2021, I am anticipated to be financially supported through a Bren Fellowship.
+
+
 
 
 \newpage
