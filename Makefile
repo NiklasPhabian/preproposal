@@ -1,6 +1,6 @@
 basename=preproposal
 
-$(basename).pdf: $(basename).tex
+$(basename).pdf: $(basename).tex context/*
 	pdflatex        $(basename).tex
 	biber           $(basename)
 	makeglossaries  $(basename)
