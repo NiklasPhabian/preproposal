@@ -6,19 +6,27 @@
 
 \usepackage[
   backend=biber,
-  style=reading,
+  bibstyle=reading,
   citestyle=authoryear,
   abstract=false,
   file=false,
-  entryhead=true,
-  entrykey=true,
-  annotation=true,
+  entryhead=full,    
+  entrykey=false,  
+  annotation=true,  
   library=true,
   loadfiles=true,
-  natbib=true  
+  natbib=true,
+  hyperref=true,
+  backref=true,  
+  useauthor=true  
 ]{biblatex}
 
 
+\renewbibmacro*{entryhead:full}{%
+    \printnames[biblabel]{labelname},     
+    \printfield{year}
+}
+  
 
 
 \usepackage{tipa}
